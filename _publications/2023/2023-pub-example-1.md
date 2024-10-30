@@ -11,7 +11,7 @@ abstract: >-
 cover:          assets/images/covers/critrainer.png
 authors:
   - Kangyu Yuan*
-  - __Hehai Lin__*
+  - Hehai Lin*
   - Shilei Cao*
   - Zhenhui Peng†
   - Qingyu Guo
