@@ -1,70 +1,61 @@
-primary_name: "Rongsheng Wang"
+primary_name: "Hehai Lin"
 secondary_name: ""
-navbar_name: "Rongsheng Wang's Home Page"
+navbar_name: "Hehai Lin @ Sun Yat-sen University"
 
 positions:
-  - '<span class="no-break"><img src="assets/images/badges/mpu_master.png" alt="Macao Polytechnic University" class="inline-badge"/></span> M.S., Macao Polytechnic University (2024)'
+  - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Macao Polytechnic University (2024)'
 
-email: "wrs6@88.com"
-gscholar: SSaBaioAAAAJ
-sscholar: Rongsheng-Wang/2261313297
-github: wangrongsheng
-twitter: RongshengWang
+email: "hehailin11@gmail.com"
+email: "linhh29@mail2.sysu.edu.cn"
+gscholar: u2TFzcAAAAAJ
+# sscholar: Rongsheng-Wang/2261313297
+github: linhh29
+# twitter: RongshengWang
 # wechat_qrcode: assets/images/etc/wechat.jpg
 # wechat_prompt: >-
 #   Please tell me your <strong>name</strong> and <strong>affiliation</strong> (current or past) when adding my wechat. Thanks!
-zhihu: wang-rong-sheng-74
-resume: assets/cv/Resume_RongshengWang.pdf
+# zhihu: wang-rong-sheng-74
+resume: assets/cv/Resume_HehaiLin.pdf
 # linkedin: your-linked-in-id
-# orcid: 0000-0000-0000-0000
+orcid: 0009-0009-2602-9059
 
 short_bio: >-
-  I am Rongsheng Wang, I used to study at Macao Polytechnic University (MPU) and work under the supervision of Prof.<a href="https://scholar.google.com/citations?hl=zh-CN&user=lLg3WRkAAAAJ">Tao Tan</a>. My research interests are computer vision, LLM, trusted LLM, RAG, and Agent systems. I am also interested in generative data research. I am currently seeking a PhD opportunity. <br> I publish a lot of open source projects on <a href="https://github.com/WangRongsheng">🔗Github</a> <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/wangrongsheng?style=flat-square">. I shared some of the datasets and model weights used by the project at <a href="https://huggingface.co/wangrongsheng">🔗HuggingFace</a>. I likewise like to post some small-parameter LM at <a href="https://ollama.com/wangrongsheng">🔗Ollama</a> to help people use it locally.
-
+  Hehai Lin is currently a research assistant in the College of Computing and Data Science, Nanyang Technological University. Before that, he received his Bachelor degree in the School of Artificial Intelligence from Sun Yat-sen University, supervised by Prof. <a href="https://zhenhuipeng.com/">Zhenhui Peng</a> and Prof. <a href="https://xb-chang.github.io/">Xiaobin Chang</a>. His current research interests include Multimodal learning and reasoning, especially the self-evolve ability of Large vision-language models (LVLMs).
+  
 show_portrait: true
 portrait_url: assets/images/photos/profile_wrs.jpg
 portrait_caption: >-
-  我是王荣胜，欢迎访问我的主页~
+  我是林河海，欢迎访问我的主页~
 
 education:
-- name: Macao Polytechnic University
-  logo: assets/images/badges/mpu_master.png
-  position: M.S. in Big Data and Internet of Things
-  date: Sep. 2022 - Jul. 2024
-- name: Henan Polytechnic University
-  logo: assets/images/badges/hpu_bs.png
-  position: B.S. in Computer Science (AI)
-  date: Sep. 2018 - Jul. 2022
+- name: Sun Yat-sen University
+  logo: assets/images/badges/sysu.png
+  position: B.S. in Artificial Intelligence
+  date: Sep. 2020 - Jun. 2024
   
 experience:
-- name: Qiyuan.Tech
-  logo: assets/images/badges/qiyuan.png
-  position: CTO, Reasercher
-  date: Oct. 2023 - Now
-- name: HKUST (GZ) 
-  logo: assets/images/badges/hkust-gz.png
-  position: Research Assistant (Supervisor is <a href="https://web.archive.org/web/20240717103203/https://facultyprofiles.hkust-gz.edu.cn/faculty-personal-page/BAI-Yun/yunbai">Yun Bai</a> and <a href="https://cee.rutgers.edu/xiang-liu">Xiang Liu</a>)
-  date: Feb. 2024 -	May 2024
+- name: Nanyang Technological University 
+  logo: assets/images/badges/ntu.png
+  position: Research Assistant (Supervisor is <a href="https://personal.ntu.edu.sg/wangwy/">Wenya Wang</a>)
+  date: Jun. 2024 -	now
 
 
 awards:
-- name: Outstanding Award of JingDong Health - Global AI Innovation Competition
+- name: JinDao Scholarship
   date: 2024
-- name: First Prize of Baidu PaddlePaddle AGI Hackathon
-  date: 2024
-- name: Third Prize of Digital Medical Technology and Application Innovation Competition
+- name: Third-class Scholarship for outstanding Students of Sun Yat-sen University
   date: 2023
-- name: Third Prize of Baichuan Intelligence and Amazon Cloud AGI Hackathon
+- name: Honorable Mention in the ECV2023 Cross-Camera Person Tracking Competition
   date: 2023
-- name: Silver of Kaggle RSNA Screening Mammography Breast Cancer Detection
-  date: 2023
-- name: Outstanding Award of IEEE UV 2022 "Vision Meets Algae" Object Detection Challenge
+- name: The Fourth Place in the Second Intelligent Network Competition
   date: 2022
-- name: <a href="https://www.paddlepaddle.org.cn/ppdemd?n=/ppdemd/%E7%8E%8B%E8%8D%A3%E8%83%9C">Baidu PaddlePaddle Developers Experts</a>
+- name: Second-class Scholarship for outstanding Students of Sun Yat-sen University
+  date: 2022
+- name: First-class Scholarship for outstanding Students of Sun Yat-sen University
   date: 2021
 
 service:
-- name: Reviewer of <a href="https://www.embs.org/jbhi/">Journal of Biomedical and Health Informatics (JBHI)</a>
+- name: Reviewer of COLING 2025 and WWW 2025
 
 # Feel free to replace the footer text if you would like to, but I will greatly appreciate it 
 # if you keep the link to the template so that more people can benefit from it. Thanks!
