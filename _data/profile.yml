@@ -6,7 +6,7 @@ positions:
   - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Macao Polytechnic University (2024)'
 
 email: "hehailin11@gmail.com"
-email: "linhh29@mail2.sysu.edu.cn"
+# email: "linhh29@mail2.sysu.edu.cn"
 gscholar: u2TFzcAAAAAJ
 # sscholar: Rongsheng-Wang/2261313297
 github: linhh29
@@ -15,7 +15,7 @@ github: linhh29
 # wechat_prompt: >-
 #   Please tell me your <strong>name</strong> and <strong>affiliation</strong> (current or past) when adding my wechat. Thanks!
 # zhihu: wang-rong-sheng-74
-resume: assets/cv/Resume_HehaiLin.pdf
+resume: assets/Resume_HehaiLin.pdf
 # linkedin: your-linked-in-id
 orcid: 0009-0009-2602-9059
 
