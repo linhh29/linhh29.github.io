@@ -3,7 +3,7 @@ secondary_name: ""
 navbar_name: "Hehai Lin @ Sun Yat-sen University"
 
 positions:
-  - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Macao Polytechnic University (2024)'
+  - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Sun Yat-sen University (2024)'
 
 email: "hehailin11@gmail.com"
 # email: "linhh29@mail2.sysu.edu.cn"
@@ -43,15 +43,15 @@ experience:
 awards:
 - name: JinDao Scholarship
   date: 2024
-- name: Third-class Scholarship for outstanding Students of Sun Yat-sen University
+- name: Third-class Scholarship of Sun Yat-sen University
   date: 2023
 - name: Honorable Mention in the ECV2023 Cross-Camera Person Tracking Competition
   date: 2023
 - name: The Fourth Place in the Second Intelligent Network Competition
   date: 2022
-- name: Second-class Scholarship for outstanding Students of Sun Yat-sen University
+- name: Second-class Scholarship of Sun Yat-sen University
   date: 2022
-- name: First-class Scholarship for outstanding Students of Sun Yat-sen University
+- name: First-class Scholarship of Sun Yat-sen University
   date: 2021
 
 service:
