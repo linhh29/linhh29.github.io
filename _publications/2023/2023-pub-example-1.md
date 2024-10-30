@@ -2,7 +2,7 @@
 title:          CriTrainer: An Adaptive Training Tool for Critical Paper Reading
 date:           2023-08-01 00:01:00 +0800
 selected:       false
-pub:            "UIST '23: Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology"
+pub:            "UIST 2023: Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology"
 pub_last:       ' <span class="badge badge-pill badge-custom badge-dark">CCF-A</span>'
 pub_date:       "2023"
 abstract: >-
