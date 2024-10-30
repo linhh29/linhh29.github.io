@@ -1,0 +1,7 @@
+@inproceedings{yuan2023critrainer,
+  title={CriTrainer: An Adaptive Training Tool for Critical Paper Reading},
+  author={Yuan, Kangyu and Lin, Hehai and Cao, Shilei and Peng, Zhenhui and Guo, Qingyu and Ma, Xiaojuan},
+  booktitle={Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology},
+  pages={1--17},
+  year={2023}
+}
