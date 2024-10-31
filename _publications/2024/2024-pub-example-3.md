@@ -1,5 +1,5 @@
 ---
-title:          Self-Correction is More than Refinement: A Learning Framework for Visual and Language Reasoning Tasks
+title:          Self-Correction is More than Refinement： A Learning Framework for Visual and Language Reasoning Tasks
 date:           2024-12-20 00:01:00 +0800
 selected:       true
 pub:            "Under review"
