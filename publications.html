@@ -11,7 +11,7 @@ body_attr: >-
 </blockquote> -->
 
 {% assign pubs_by_year = site.publications | sort: "date" | reverse | group_by_exp: "item", "item.date | date: '%Y'" %}
-
+<mark>(† <i> corresponding author</i>, * <i> equal contribution</i>)</mark>
 <div class="row">
     <div class="col-12 col-lg-10">
         {% for year in pubs_by_year %}
