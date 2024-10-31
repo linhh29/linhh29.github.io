@@ -22,3 +22,6 @@ authors:
   - Jianxing Yu
   - Jian Yin
 ---
+# links:
+  Paper: https://arxiv.org/abs/2407.11536
+  Poster: assets/images/poster/icml2024-ws.jpeg
