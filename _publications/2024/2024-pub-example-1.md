@@ -13,14 +13,14 @@ abstract: >-
   
 cover:          assets/images/covers/safe.png
 authors:
-- Hehai Lin
-- Wei Liu†
-- Mengting Li
-- Kangyu Yuan
-- Zhao Liu
-- Huaijie Zhu
-- Jianxing Yu
-- Jian Yin
+  - Hehai Lin
+  - Wei Liu†
+  - Mengting Li
+  - Kangyu Yuan
+  - Zhao Liu
+  - Huaijie Zhu
+  - Jianxing Yu
+  - Jian Yin
 # links:
   Paper: https://arxiv.org/abs/2407.11536
   Poster: assets/images/poster/icml2024-ws.jpeg
