@@ -13,7 +13,7 @@ abstract: >-
   
 cover:          assets/images/covers/safe.png
 authors:
-- Hehai Lin
+  - Hehai Lin
   - Wei Liu†
   - Mengting Li
   - Kangyu Yuan
