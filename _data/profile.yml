@@ -1,9 +1,9 @@
 primary_name: "Hehai Lin"
 secondary_name: ""
-navbar_name: "Hehai Lin @ Sun Yat-sen University"
+navbar_name: "Hehai Lin @ The Hong Kong University of Science and Technology (Guangzhou)"
 
-positions:
-  - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Sun Yat-sen University (2024)'
+# positions:
+#   - '<span class="no-break"><img src="assets/images/badges/sysu.png" alt="Sun Yat-sen University" class="inline-badge"/></span> B.S., Sun Yat-sen University (2024)'
 
 email: "hehailin11@gmail.com"
 # email: "linhh29@mail2.sysu.edu.cn"
@@ -19,8 +19,9 @@ resume: assets/Resume_HehaiLin.pdf
 # linkedin: your-linked-in-id
 orcid: 0009-0009-2602-9059
 
+# , supervised by Prof. <a href="https://qcwthu.github.io/">Chengwei Qin</a>.
 short_bio: >-
-  Hehai Lin is currently a research assistant in the College of Computing and Data Science, Nanyang Technological University. Before that, he received his Bachelor degree in the School of Artificial Intelligence from Sun Yat-sen University, supervised by Prof. <a href="https://zhenhuipeng.com/">Zhenhui Peng</a> and Prof. <a href="https://xb-chang.github.io/">Xiaobin Chang</a>. His current research interests include Multimodal learning and reasoning, especially the self-evolve ability of Large vision-language models (LVLMs).
+  Hehai Lin is an incoming PhD student at The Hong Kong University of Science and Technology (Guangzhou). Before that, he received his Bachelor degree in the School of Artificial Intelligence from Sun Yat-sen University, supervised by Prof. <a href="https://zhenhuipeng.com/">Zhenhui Peng</a> and Prof. <a href="https://xb-chang.github.io/">Xiaobin Chang</a>. He also works closely with Prof. <a href="https://personal.ntu.edu.sg/wangwy/">Wenya Wang</a> in the College of Computing and Data Science, Nanyang Technological University. His current research interests include Multimodal learning and reasoning, especially the self-evolve ability of Large vision-language models (LVLMs).
   
 show_portrait: true
 portrait_url: assets/images/photos/me2.png
@@ -37,7 +38,7 @@ experience:
 - name: Nanyang Technological University 
   logo: assets/images/badges/ntu.png
   position: Research Assistant (Supervisor is <a href="https://personal.ntu.edu.sg/wangwy/">Wenya Wang</a>)
-  date: Jun. 2024 -	now
+  date: Jun. 2024 -	Nov. 2024
 
 
 awards:
