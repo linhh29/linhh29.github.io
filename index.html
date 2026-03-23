@@ -11,4 +11,23 @@
   <body>
     <div id="root"></div>
   </body>
+  <script>
+    // 使用带时间戳的 raw.githubusercontent.com 直链，彻底绕过打包延迟和浏览器缓存
+    const rawUrl = 'https://raw.githubusercontent.com/linhh29/linhh29.github.io/master/public/citations.json?t=' + new Date().getTime();
+
+    fetch(rawUrl)
+        .then(response => {
+            if (!response.ok) throw new Error("在 master 分支没找到数据文件");
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.citations) {
+                document.getElementById('citation-count').innerText = data.citations;
+            }
+        })
+        .catch(err => {
+            console.log("获取引用量失败：", err);
+            document.getElementById('citation-count').innerText = "--";
+        });
+  </script>
 </html> 
