@@ -1,0 +1,36 @@
+name: Update Google Scholar Citations
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 UTC 时间 0 点（北京时间早上 8 点）自动运行一次
+  workflow_dispatch: # 允许手动点击运行
+
+jobs:
+  update-citations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch from SerpApi and extract citations
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+        run: |
+          # 1. 调用接口并将原始数据存入 temp.json
+          curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=-u2TFzcAAAAAJ&api_key=${SERPAPI_KEY}" > temp.json
+
+          # 2. 使用 jq 精准提取引用数字（例如：87）
+          CITATIONS=$(jq -r '.cited_by.table[0].citations.all' temp.json)
+          echo "成功抓取到引用量: $CITATIONS"
+
+          # 3. 组装成网页需要的格式并存入 public 文件夹
+          mkdir -p public
+          echo "{\"citations\": $CITATIONS}" > public/citations.json
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/citations.json || true
+          git diff --staged --quiet || git commit -m "Auto-update citations count"
+          git push
