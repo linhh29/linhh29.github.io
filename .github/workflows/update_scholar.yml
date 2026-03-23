@@ -23,14 +23,22 @@ jobs:
           CITATIONS=$(jq -r '.cited_by.table[0].citations.all' temp.json)
           echo "成功抓取到引用量: $CITATIONS"
 
-          # 3. 组装成网页需要的格式并存入 public 文件夹
-          mkdir -p public
-          echo "{\"citations\": $CITATIONS}" > public/citations.json
+          # 3. 直接替换打包产物里的 citations 数字
+          JS_FILE=$(ls assets/index-*.js)
+          if [ -z "$JS_FILE" ]; then
+            echo "未找到 assets/index-*.js，退出"
+            exit 1
+          fi
+
+          # 将形如 citations:61 或 citations : 61 替换为最新值
+          sed -E -i "s/(citations[[:space:]]*:[[:space:]]*)[0-9]+/\1$CITATIONS/g" "$JS_FILE"
+          echo "已更新文件: $JS_FILE"
+          rm -f temp.json
 
       - name: Commit and push if changed
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public/citations.json || true
+          git add assets/index-*.js || true
           git diff --staged --quiet || git commit -m "Auto-update citations count"
           git push
