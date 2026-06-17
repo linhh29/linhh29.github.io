@@ -1,0 +1,302 @@
+.mas-showcase {
+  margin-top: 1.25rem;
+}
+
+.mas-showcase-intro {
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  color: #334155;
+}
+
+.mas-showcase-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.mas-showcase-filter {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.mas-showcase-filter:hover {
+  border-color: #0891b2;
+  color: #0e7490;
+}
+
+.mas-showcase-filter.is-active {
+  background: #ecfeff;
+  border-color: #0891b2;
+  color: #0e7490;
+}
+
+.mas-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.mas-showcase-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 220px;
+}
+
+.mas-showcase-card.is-hidden {
+  display: none;
+}
+
+.mas-showcase-card-info {
+  flex: 0 0 34%;
+  max-width: 380px;
+  min-width: 260px;
+  padding: 1.1rem 1.15rem;
+  border-right: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.mas-showcase-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.mas-showcase-tag {
+  display: inline-block;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.mas-showcase-tag.topology-serial {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.mas-showcase-tag.topology-parallel {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.mas-showcase-tag.topology-loop {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.mas-showcase-tag.dataset {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.mas-showcase-card-title {
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mas-showcase-card-preview {
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mas-showcase-card-summary {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+.mas-showcase-card-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0891b2;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.mas-showcase-card-link:hover {
+  color: #0e7490;
+}
+
+.mas-showcase-card-graph {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.05) 1px, transparent 0),
+    linear-gradient(180deg, #fafbff 0%, #f4f7ff 100%);
+  background-size: 18px 18px, auto;
+}
+
+.mas-showcase-graph {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.07) 1px, transparent 0),
+    linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+  background-size: 18px 18px, auto;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mas-showcase-graph-stage {
+  position: relative;
+  margin: 0 auto;
+}
+
+.mas-showcase-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.mas-showcase-edge {
+  fill: none;
+}
+
+.mas-showcase-edge-track {
+  stroke: #cbd5e1;
+  stroke-width: 2;
+}
+
+.mas-showcase-edge-flow {
+  stroke: #6366f1;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 10 8;
+  animation: mas-showcase-edge-flow 1.1s linear infinite;
+}
+
+.mas-showcase-edge-loop {
+  stroke: #f97316;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+}
+
+.mas-showcase-edge-loop-flow {
+  stroke: #ea580c;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 6;
+  animation: mas-showcase-edge-flow 0.9s linear infinite;
+}
+
+@keyframes mas-showcase-edge-flow {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+.mas-showcase-nodes {
+  position: absolute;
+  inset: 0;
+}
+
+.mas-showcase-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 10px;
+  border: 1.5px solid #a5b4fc;
+  background: linear-gradient(180deg, #ffffff 0%, #eef2ff 100%);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12);
+  padding: 0.35rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #312e81;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.mas-showcase-cta {
+  margin-top: 1.5rem;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid #bae6fd;
+  background: linear-gradient(135deg, #ecfeff 0%, #f0fdf4 100%);
+}
+
+.mas-showcase-cta-text {
+  margin: 0;
+  line-height: 1.65;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.mas-showcase-cta-text a {
+  color: #0891b2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mas-showcase-cta-text a:hover {
+  color: #0e7490;
+  text-decoration: underline;
+}
+
+.mas-showcase-meta {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 960px) {
+  .mas-showcase-card {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .mas-showcase-card-info {
+    flex: none;
+    max-width: none;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .mas-showcase-card-graph {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mas-showcase-edge-flow,
+  .mas-showcase-edge-loop-flow {
+    animation: none;
+  }
+}

@@ -1,0 +1,73 @@
+/* ===== Language Switch ===== */
+.lang-switch-fixed {
+  position: fixed;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.lang-switch-hero {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.lang-switch {
+  display: none !important;
+}
+
+.lang-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  background: transparent;
+  font-family: inherit;
+}
+
+.lang-switch-btn.active {
+  cursor: default;
+}
+
+/* Fixed position (top-right) */
+.lang-switch-fixed .lang-switch-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lang-switch-fixed .lang-switch-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.lang-switch-fixed .lang-switch-btn.active {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+}
+
+/* Hero position */
+.lang-switch-hero .lang-switch-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lang-switch-hero .lang-switch-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.lang-switch-hero .lang-switch-btn.active {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+}

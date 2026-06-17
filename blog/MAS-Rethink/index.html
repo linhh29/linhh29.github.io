@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Rethinking Automatic Multi-Agent Systems: From Illusion to Evolution: A unified perspective on why automatic-MAS fail and how to build them better">
+  <meta name="keywords" content="LLM, Multi-agent Systems, Automatic MAS Design, Meta-Skill, Domain-Specific Nodes, MAS Evaluation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rethinking Automatic MAS: From Illusion to Evolution</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/blog/_shared/css/view-count.css">
+  <link rel="stylesheet" href="/blog/_shared/css/i18n.css">
+
+  <style>
+    :root {
+      --gradient-start: #1a1a2e;
+      --gradient-end: #16213e;
+      --accent: #e94560;
+      --accent-dark: #c23152;
+      --accent2: #0f3460;
+      --accent3: #533483;
+      --card-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --border-color: rgba(255, 255, 255, 0.28);
+      --section-bg: #ffffff;
+      --page-bg: #f0f2f5;
+    }
+
+    body {
+      background: var(--page-bg);
+      color: #1e293b;
+      font-family: "Noto Sans", sans-serif;
+    }
+
+    .hero.hero-gradient {
+      background: linear-gradient(160deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: #fff;
+      padding: 2.5rem 0 3.5rem;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .hero .publication-title {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero.hero-gradient strong,
+    .hero.hero-gradient .subtitle strong {
+      color: #f8c291;
+      font-weight: 700;
+    }
+
+    .meta-badges span {
+      display: inline-block;
+      margin: 0.3rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .cta-buttons a.button {
+      margin: 0.4rem;
+      font-weight: 600;
+    }
+
+    .author-list {
+      margin-top: 2rem;
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+
+    .author-list a {
+      color: #f8c291;
+      border-bottom: 1px dotted rgba(248, 194, 145, 0.5);
+    }
+
+    .author-list a:hover {
+      border-bottom-color: #f8c291;
+    }
+
+    .affiliation {
+      margin-top: 0.75rem;
+      opacity: 0.88;
+      font-size: 0.95rem;
+    }
+
+    .section-heading {
+      font-family: "Google Sans", "Noto Sans", sans-serif;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-heading.left-rule {
+      text-align: left;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .highlight-card {
+      background: var(--section-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid #dbeafe;
+    }
+
+    .feature-card {
+      background: #f9fafc;
+      border-radius: 14px;
+      padding: 1.6rem;
+      border: 1px solid #e0e7ff;
+      height: 100%;
+    }
+
+    .feature-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .feature-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .contributions-section .feature-card {
+      background: #ffffff;
+    }
+
+    .insight-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+    }
+
+    .insight-card h4 {
+      font-weight: 650;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .insight-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+      color: #1f2a44;
+    }
+
+    .insight-card.is-observation {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+    }
+
+    .insight-card.is-insight {
+      background: #fff4e6;
+      border-left: 4px solid #f7971e;
+    }
+
+    .insight-card.is-warning {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+    }
+
+    .insight-card.is-future {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .figure-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--card-shadow);
+      margin: 1.25rem auto;
+      border: 1px solid #eef0fb;
+    }
+
+    .figure-card img {
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-card figcaption {
+      padding: 1rem 1.1rem;
+      font-size: 0.88rem;
+      background: #f7f8fc;
+      line-height: 1.6;
+      text-align: left !important;
+    }
+
+    .highlight-card .figure-card {
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+      margin: 1rem auto;
+    }
+
+    .figure-card.figure-wide {
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-narrow {
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-medium {
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-small {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-xs {
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-wide img,
+    .figure-card.figure-narrow img,
+    .figure-card.figure-medium img,
+    .figure-card.figure-small img,
+    .figure-card.figure-xs img {
+      width: 100%;
+      height: auto;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    .figure-card > .figure-row {
+      margin-bottom: 0;
+    }
+
+    .figure-row .figure-card {
+      margin: 0;
+      max-width: none;
+    }
+
+    .figure-row .figure-card figcaption {
+      font-size: 0.85rem;
+      padding: 0.9rem 1rem;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .process-step {
+      background: white;
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.08);
+      min-width: 0;
+    }
+
+    .process-step h5 {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f766e;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .process-step p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .comparison-card {
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      background: #fff;
+    }
+
+    .comparison-card.bad {
+      border-top: 4px solid #ef4444;
+    }
+
+    .comparison-card.good,
+    .comparison-card.highlight {
+      border-top: 4px solid #10b981;
+    }
+
+    .comparison-card h5 {
+      font-weight: 650;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-card p {
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .benchmark-stats {
+      margin-top: 1.25rem;
+    }
+
+    .benchmark-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+
+    .benchmark-stat {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      text-align: center;
+    }
+
+    .benchmark-stat .stat-label {
+      font-weight: 650;
+      color: #3a3f73;
+      font-size: 0.95rem;
+    }
+
+    .benchmark-stat .stat-desc {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    .tag-pill.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .tag-pill.blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .tag-pill.purple {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .tag-pill.green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .roadmap-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roadmap-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .roadmap-card.diagnose::before { background: #ef4444; }
+    .roadmap-card.deep::before     { background: #3b82f6; }
+    .roadmap-card.evolve::before    { background: #8b5cf6; }
+
+    .roadmap-card h4 {
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+    }
+
+    .roadmap-card .work-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 0.8rem;
+    }
+
+    a.blog-link {
+      color: var(--accent2);
+      text-decoration: underline;
+      text-decoration-color: rgba(15, 52, 96, 0.35);
+      text-underline-offset: 2px;
+    }
+
+    a.blog-link:hover {
+      color: var(--accent);
+    }
+
+    .demo-embed {
+      margin-top: 1.5rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e0e7ff;
+      box-shadow: var(--card-shadow);
+    }
+
+    .demo-embed iframe {
+      width: 100%;
+      height: 72vh;
+      min-height: 420px;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    .roadmap-card p {
+      line-height: 1.7;
+      font-size: 0.92rem;
+      color: #334155;
+    }
+
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2.5rem 1.5rem 3rem;
+      margin-top: 2rem;
+    }
+
+    .site-footer .thank-you {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .site-footer .footer-links {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .site-footer .footer-attribution {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+      line-height: 1.65;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-footer a {
+      color: #67e8f9;
+    }
+
+    .site-footer a:hover {
+      color: #a5f3fc;
+    }
+
+    .quote-box {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      color: #e0e7ff;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      border-left: 4px solid #f8c291;
+    }
+
+    .quote-box strong {
+      color: #f8c291;
+    }
+
+    .work-section {
+      border-left: 3px solid;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .work-section.illusion { border-left-color: #ef4444; }
+    .work-section.unified  { border-left-color: #3b82f6; }
+    .work-section.skill    { border-left-color: #8b5cf6; }
+
+    .work-section h3 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .work-section.illusion h3 { color: #dc2626; }
+    .work-section.unified h3  { color: #2563eb; }
+    .work-section.skill h3    { color: #7c3aed; }
+
+    .separator {
+      border: none;
+      border-top: 2px dashed #e2e8f0;
+      margin: 2.5rem 0;
+    }
+  </style>
+</head>
+<body data-blog-id="mas-rethink">
+
+<div class="lang-switch lang-switch-fixed"></div>
+
+<section class="hero hero-gradient">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="color: #ffffff; margin-bottom: 1rem;">
+            Rethinking Automatic-MAS
+          </h1>
+          <h2 class="subtitle is-4" style="max-width: 920px; margin: 0 auto 1.5rem; line-height: 1.5;">
+            From Illusion to Evolution: A Unified Perspective on Building Better MAS
+          </h2>
+          <p class="subtitle is-5" style="opacity: 0.92; max-width: 920px; margin: 0 auto 1.6rem; line-height: 1.7; text-align: justify;">
+            This blog weaves together our <strong>three interconnected stuides</strong> on automatic Multi-Agent Systems (MAS) into a unified perspective, systematically
+            diagnosing why current <strong>automatic-MAS fall short</strong>, proposing principled solutions for
+            <strong>domain depth</strong> and <strong>evolutionary breadth</strong>, and charting a roadmap for the future design of LLM-based multi-agent coordination.
+          </p>
+
+          <div class="meta-badges">
+            <span>MAS Evaluation</span>
+            <span>Domain-Specific Nodes</span>
+            <span>Meta-Skill Evolution</span>
+            <span>Architectural Deconstruction</span>
+            <span>Future Directions</span>
+          </div>
+
+          <div class="lang-switch lang-switch-hero"></div>
+
+          <div class="author-list">
+            <a href="https://linhh29.github.io/" target="_blank" rel="noopener noreferrer">Hehai Lin</a>,
+            <a href="https://qcwthu.github.io/" target="_blank" rel="noopener noreferrer">Chengwei Qin</a>
+          </div>
+          <p class="affiliation">
+            LAI Lab, The Hong Kong University of Science and Technology (Guangzhou)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Prologue -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Prologue: The MAS Promise</h2>
+      <p style="line-height: 1.85;">
+        The rapid evolution of Large Language Models (LLMs) has fundamentally transformed the landscape of
+        artificial intelligence. Building upon this foundation, <strong>LLM-based Multi-Agent Systems (MAS)</strong> have
+        emerged as a powerful paradigm, promising to solve complex tasks through collaborative intelligence,
+        including task decomposition, role specialization, parallel execution, debate, and cross-verification.
+        By orchestrating multiple LLM agents, each equipped with distinct roles and capabilities, MAS
+        tackle problems that exceed the reach of any individual model.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        Traditionally, designing effective MAS required meticulous manual engineering by human experts.
+        However, the community has recently undergone a paradigm shift toward <strong>automatic-MAS
+        generation</strong>, i.e., frameworks that autonomously discover agent roles, communication topologies,
+        and execution workflows without human intervention. The promise is: let powerful LLMs analyze the task and trajectories, and discover novel agentic workflows that surpass even
+        human-designed solutions.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong>But is the promise real?</strong> Over the last few months, we have conducted a systematic investigation
+        into automatic-MAS, from rigorously diagnosing their failures to proposing principled solutions.
+        This blog synthesizes our three studies into a unified perspective: <strong>why automatic-MAS fall short</strong>,
+        <strong>how to make them domain experts (Domain Depth)</strong>, and <strong>how to make them evolve (Evolutionary Breadth)</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- The Big Picture -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule" style="margin-bottom: 1.5rem;">The Big Picture</h2>
+    <div class="roadmap-grid">
+      <div class="roadmap-card diagnose">
+        <span class="tag-pill red">Part 1</span>
+        <h4 style="margin-top: 0.5rem; color: #dc2626;">Diagnose</h4>
+        <div class="work-title">The Illusion of Multi-Agent Advantage</div>
+        <p>
+          A systematic evaluation revealing that automatic-MAS usually underperform equivalent
+          CoT-SC baselines despite incurring approximately 10&times; higher inference cost.
+          Architectural deconstruction exposes functional collapse, role redundancy, and systematic
+          convergence on trivial ensembles.
+        </p>
+      </div>
+      <div class="roadmap-card deep">
+        <span class="tag-pill blue">Part 2</span>
+        <h4 style="margin-top: 0.5rem; color: #2563eb;">Deepen</h4>
+        <div class="work-title"><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></div>
+        <p>
+          Decoupling node implementation from topology orchestration. Offline synthesis of
+          domain-specific nodes via external knowledge retrieval turns general automatic-MAS
+          into domain experts, achieving up to 14.2% performance gains while reducing cost.
+        </p>
+      </div>
+      <div class="roadmap-card evolve">
+        <span class="tag-pill purple">Part 3</span>
+        <h4 style="margin-top: 0.5rem; color: #7c3aed;">Evolve</h4>
+        <div class="work-title"><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></div>
+        <p>
+          A third path beyond inference-time and training-time approaches: conceptualizing
+          orchestration as an evolvable Meta-Skill that enables frozen frontier LLMs to
+          progressively learn and refine their MAS generation strategies across tasks.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ PART 1: ILLUSION ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section illusion">
+      <h3 class="title is-4">Part 1: The Illusion of Multi-Agent Advantage</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Central Question: Do automatic-MAS Actually Work?</h2>
+      <p style="line-height: 1.85;">
+        Prevailing wisdom posits that Multi-Agent Systems are superior to Single-Agent Systems (SAS),
+        citing advantages such as context protection, parallel processing, and distributed decision-making.
+        This expectation has driven the rapid development of <strong>automatic-MAS</strong>, including
+        DyLAN, MAS-Zero, ADAS, AFlow, MaAS, and MAS-Orchestra, that dynamically decompose tasks,
+        configure agent roles, and manage execution flow without human intervention.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        We conducted a rigorous, systematic evaluation of these six representative automatic-MAS
+        against a simple SAS baseline: <strong>Chain-of-Thought with Self-Consistency (CoT-SC)</strong>.
+        Our evaluation spanned multiple LLMs, i.e., GPT-4o, GPT-5, GPT-OSS-120B, and
+        Gemini-2.5-Pro, and covered both standard reasoning tasks (GPQA-Diamond, HLE-Maths,
+        SWE-Bench Lite) and complex agentic settings (BrowseComp-Plus).
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Results: CoT-SC Outperforms Automatic-MAS in Most Cases</h2>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/main_results.png" alt="The MAS Efficiency Frontier: cost vs accuracy trade-offs">
+        <figcaption>
+          <strong>Figure 1:</strong> The MAS Efficiency Frontier. Cost vs. accuracy trade-offs across benchmarks.
+          CoT-SC provides the optimal balance of performance and cost-efficiency. automatic-MAS
+          (e.g., ADAS, MAS-Orchestra) frequently incur &asymp;10&times; inference costs relative to SAS
+          baselines for negligible gains, while failing to elevate weaker backbone models.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        The results are sobering. Across almost all benchmarks, <strong>CoT-SC usually outperforms automatic-MAS
+        frameworks</strong>, frequently achieving higher accuracy at less than 10% of the computational cost.
+        Three key findings emerge from this evaluation:
+      </p>
+      <ul style="line-height: 1.85; margin-top: 0.8rem; padding-left: 1.5rem;">
+        <li><strong>1. No Gains for Mid-Tier Models:</strong> automatic-MAS fails to provide consistent improvements for models such as GPT-4o or GPT-OSS.</li>
+        <li><strong>2. Model Tier Superiority:</strong> A single-agent GPT-5 instance using CoT-SC reliably outperforms the most sophisticated GPT-4o-based automatic-MAS while consuming less than half the total tokens.</li>
+        <li><strong>3. A Competency Floor Exists:</strong> Significant automatic-MAS uplift only appears on HLE-Math using GPT-5 and Gemini-2.5-Pro, suggesting that architectural complexity requires a baseline level of inherent reasoning capability to be beneficial.</li>
+      </ul>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The SMFR Diagnostic: Task Suitability Is Not the Problem</h2>
+      <p style="line-height: 1.85;">
+        A natural counterargument is that standard benchmarks lack the structural properties that MAS
+        require to demonstrate their advantages. To address this, we introduced the
+        <strong>Synthetic Multi-Hop Financial Reasoning (SMFR)</strong> dataset, a diagnostic benchmark explicitly
+        designed with sub-task decomposition, context-heavy inputs, and clear opportunities for
+        parallelization and specialization, following Anthropic's guidelines on when MAS are appropriate.
+        Each problem requires multi-step context extraction, numerical reasoning, and cross-investor
+        synthesis, resisting shortcut strategies by design.
+      </p>
+      <figure class="figure-card">
+        <div class="figure-row">
+          <img src="./assets/background_preview.png" alt="The illusion of multi-agent advantage: Expectation vs. Reality">
+          <img src="./assets/smfr_result.png" alt="SMFR diagnostic benchmark results across GPT-4o, GPT-OSS-120B, and GPT-5">
+        </div>
+        <figcaption>
+          <strong>Figure 2:</strong> The illusion of multi-agent advantage. Theory promises specialization, but
+          reality reveals redundancy and functional collapse (left). The SMFR diagnostic benchmark (right)
+          provides structured sub-task decomposition, with Expert-MAS achieving near-perfect scores
+          when the architecture is properly engineered.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        Even under explicitly agentic requirements, automatic-MAS consistently fail to surpass
+        CoT-SC efficiency. On SMFR, GPT-5 achieves only 49.1% accuracy with CoT-SC, while our
+        Expert-MAS, which enforces explicit decomposition, role specialization, and deterministic
+        orchestration via a Python-based executor, reaches <strong>96.7%</strong>. This demonstrates that the MAS
+        paradigm is fundamentally viable, but <strong>current automatic-MAS systematically fail to
+        exploit task-specific structural opportunities</strong>.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">Architectural Deconstruction: What Goes Wrong Inside?</h2>
+      <p style="line-height: 1.85;">
+        To understand <em>why</em> automatic-MAS underperform, we systematically deconstructed the generated
+        architectures across these six automaitc-MAS. Three systematic failure patterns emerged,
+        each revealing a fundamental misalignment between architectural complexity and functional utility:
+      </p>
+
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <h5>Functional Collapse &amp; Role Redundancy</h5>
+          <p>In DyLAN, agents reach immediate unanimous consensus in &gt;90% of GPT-5 cases, degenerating into a redundant CoT-SC baseline. In MAS-Zero, verifiers exhibit systematic positional bias, i.e., selecting earlier context-window entries over 45% of the time, thereby rendering subsequent search rounds "expensive witnesses" with near-zero causal influence on the final output.</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>Convergence on Heuristic Artifacts</h5>
+          <p>ADAS and AFlow behave as heuristic explorers rather than principled optimizers. ADAS exhibits non-monotonic search dynamics where accuracy peaks early and subsequently regresses. AFlow's "optimized" workflows degenerate into trivial ensembles: across 14 final workflows evaluated on five datasets, 50% simply iterate a single custom prompt three times before aggregation, structurally identical to CoT-SC.</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>Incentive Misalignment in Dynamic Routing</h5>
+          <p>MaAS collapses to trivial I/O calls on context-heavy tasks (74.2% of activations on BrowseComp-Plus), driven by cost-dominated optimization. MAS-Orchestra ignores its diverse agent pool, converging instead on a rigid binary preference for Debate and Reflexion agents regardless of task difficulty, diverging from its intellignet routing design.</p>
+        </div>
+      </div>
+
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        <strong>The Ensembling Trap:</strong> A primary driver of this collapse is the reliance on CoT and CoT-SC
+        as the fundamental building blocks of automatic-MAS. Rather than synergistic coordination, these
+        frameworks converge on structural degeneration, i.e., rediscovering basic ensembling motifs under
+        the guise of optimized graphs. The &asymp;10&times; increase in computational cost thus purchases
+        little more than a redundant, poorly routed variant of standard CoT-SC.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">Case Studies: Visual Evidence of Failure</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/mas_zero_fail.png" alt="MAS-Zero failure analysis">
+          <figcaption>
+            <strong>Figure 3:</strong> MAS-Zero verifier selection bias. The verifier disproportionately favors
+            earlier entries in the context window, causing later rounds of multi-agent search to
+            exert near-zero causal influence on the final output.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/aflow_fail.png" alt="AFlow workflow degeneration">
+          <figcaption>
+            <strong>Figure 4:</strong> AFlow optimized workflows. Instead of manifesting complex coordination,
+            discovered MAS consistently degenerate into trivial ensembles, iterating a single custom
+            prompt three times before aggregation, functionally identical to standard CoT-SC.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/adas_fail.png" alt="ADAS non-monotonic search">
+          <figcaption>
+            <strong>Figure 5:</strong> ADAS search dynamics on GPQA-Diamond. Accuracy frequently peaks early
+            and subsequently regresses, indicating that performance gains are stochastic "lucky" iterations
+            rather than structural evolution.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/dylan_fail.png" alt="DyLAN functional collapse">
+          <figcaption>
+            <strong>Figure 6:</strong> DyLAN's functional collapse. Agents reach immediate unanimous consensus
+            in &sim;70% of GPT-4o and &gt;90% of GPT-5 cases, effectively functioning as a unanimous
+            CoT-SC baseline rather than a dynamic negotiation system.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/maas_fail.png" alt="MaAS incentive misalignment">
+          <figcaption>
+            <strong>Figure 7:</strong> MaAS operator activation distribution. On context-heavy BrowseComp-Plus,
+            the controller collapses to trivial I/O calls (74.2% of activations), driven by
+            cost-dominated optimization.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/maas_orchestra_fail.png" alt="MAS-Orchestra difficulty-agnostic policy">
+          <figcaption>
+            <strong>Figure 8:</strong> MAS-Orchestra agent selection distribution. The orchestrator ignores
+            its diverse agent pool, converging on a rigid binary preference for Debate and Reflexion
+            agents regardless of task difficulty, i.e., a difficulty-agnostic policy.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ PART 2: UNIFIED-MAS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section unified">
+      <h3 class="title is-4">Part 2: <a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a>: Mastering Domain Depth</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Knowledge Gap: Why automatic-MAS Fail in Specialized Domains</h2>
+      <p style="line-height: 1.85;">
+        Part 1 reveals that automatic-MAS suffer from severe architectural degeneration. When applied to <strong>knowledge-intensive domains</strong> such as healthcare,
+        law, and finance, existing frameworks encounter a fundamental bottleneck. They either rely on a
+        static library of general-purpose nodes (e.g., Chain-of-Thought, Debate) that lack specialized
+        expertise, or attempt to generate nodes on the fly, but the orchestrator is constrained by its
+        internal parametric knowledge and must simultaneously design domain-specific logic <em>and</em>
+        optimize high-level topology. This <strong>architectural coupling</strong> severely degrades system efficacy.
+      </p>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/unified_background.png" alt="Unified-MAS paradigm overview">
+        <figcaption>
+          <strong>Figure 9:</strong> Overview of MAS paradigms. (a) Performance degradation in specialized domains,
+          where automatic-MAS with predefined nodes consistently underperform manual domain-specific MAS.
+          (b)-(c) Existing paradigms struggle with the dichotomy between dynamic node generation and
+          topological flexibility. (d) Unified-MAS leverages open-world knowledge to generate
+          domain-specific nodes, empowering existing automatic-MAS frameworks.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Key Insight: Decouple What from How</h2>
+      <p style="line-height: 1.85;">
+        We propose <strong><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></strong>, which decouples granular node implementation from topological
+        orchestration via offline node synthesis. Rather than burdening the orchestrator with both
+        designing domain-specific agents <em>and</em> optimizing their connectivity, <a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a> acts as an
+        <strong>offline node synthesizer</strong> that generates expert-level nodes before any topological search begins.
+        The framework operates in two stages:
+      </p>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/unified_method.png" alt="Unified-MAS two-stage pipeline">
+        <figcaption>
+          <strong>Figure 10:</strong> Unified-MAS two-stage pipeline. (a) Search-Based Node Generation retrieves
+          external knowledge via keyword-strategy driven queries to initialize domain-specific nodes.
+          (b) Reward-Based Node Optimization iteratively identifies and refines bottleneck nodes guided
+          by a perplexity-based reward. (c) The resulting domain-specific node set integrates seamlessly
+          into any existing automatic-MAS framework.
+        </figcaption>
+      </figure>
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>Stage 1 &middot; Keyword Extraction</h5>
+          <p>Sample validation examples and extract keywords across seven dimensions: Domain, Task, Entities, Actions, Constraints, Desired Outcomes, and Implicit Knowledge.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 1 &middot; Strategy Search</h5>
+          <p>Four search strategies target background knowledge (Scholar), system architecture (Google), code repositories (GitHub), and evaluation benchmarks, grounding node synthesis in real domain knowledge.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 &middot; Reward Scoring</h5>
+          <p>Execute nodes on validation data; compute perplexity-guided rewards measuring each node's improvement and consistency contribution to the final answer.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 &middot; Bottleneck Refinement</h5>
+          <p>Identify the lowest-reward node each epoch, refine its prompts or add sub-calls, and repeat until performance converges, typically within 10 epochs.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">Results: Better cost-performance trade-off</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/table_main.png" alt="Table 1: Main results across four LLMs and four benchmarks">
+          <figcaption>
+            <strong>Table 1.</strong> Quantitative comparison of Unified-MAS and baselines on four benchmarks.
+            TP: TravelPlanner, HB: HealthBench, J1: J1Bench, DF: DeepFund.
+            Rows highlighted in blue indicate methods enhanced with Unified-MAS domain-specific nodes.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/unified_gap_cost.png" alt="Unified-MAS performance and cost improvements">
+          <figcaption>
+            <strong>Figure 11:</strong> Performance gains and cost reductions with Unified-MAS. Integrating
+            Unified-MAS domain-specific nodes into four automatic-MAS baselines yields consistent
+            improvements across four LLMs and four benchmarks, with gains ranging from
+            <strong>+6.0% to +14.2%</strong> while simultaneously reducing inference costs.
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85;">
+        Unified-MAS acts as a <strong>universal node synthesizer</strong>. The generated nodes plug into MAS-Zero, AFlow,
+        ScoreFlow, and MAS&sup2; without modifying their high-level orchestrators, elevating general automatic-MAS
+        into domain experts with consistent gains across four LLM backbones. On J1Bench (legal judgment),
+        for instance, Unified-MAS produces a structured judicial pipeline of
+        <span class="tag-pill">Legal_Element_Extractor</span>
+        <span class="tag-pill">Fact_Analyzer</span>
+        <span class="tag-pill">Liability_Reasoning</span>
+        <span class="tag-pill">Damages_Calculator</span>
+        <span class="tag-pill">Judgment_Drafter</span>, replacing the superficial ensemble nodes ("Expert1", "Expert2")
+        that dynamic generation methods typically produce:
+      </p>
+      <figure class="figure-card figure-wide" style="margin-top: 1.25rem;">
+        <img src="./assets/unified_mas_case.png" alt="J1Bench node comparison: Unified-MAS vs. dynamic automatic-MAS methods">
+        <figcaption>
+          <strong>Case Study · J1Bench:</strong> Side-by-side comparison of generated nodes on a legal judgment task.
+          Dynamic methods (AOrchestra, EvoAgent, MetaAgent) resort to generic orchestration primitives or superficial
+          expert ensembles ("Expert#1", "Expert#2", "Expert#3"), while Unified-MAS synthesizes domain-grounded judicial
+          pipelines grounded in retrieved legal knowledge, with topology adapting to the Designer LLM (concise
+          macro-level workflows for Gemini-3-Flash, finer-grained decomposition for GPT-5-Mini).
+        </figcaption>
+      </figure>
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>Key Finding</h4>
+            <p>External retrieval is the critical differentiator: it transforms node generation from hallucinated naming into expert workflow design grounded in real domain knowledge. The resulting nodes encode traceable, domain-grounded reasoning stages.</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>Key Insight</h4>
+            <p>Unified-MAS is not bottlenecked by any single Designer LLM. Gemini models synthesize concise macro-level workflows (&sim;5 to 6 nodes), while GPT-5-Mini favors micro-level granularity (&sim;10 nodes): Unified-MAS consistently drives substantial gains with all backbones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading left-rule">Pipeline Explorer Demo</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        Browse <strong>pre-computed search artifacts</strong> from our paper benchmarks to watch how Unified-MAS extracts
+        task keywords, formulates multi-strategy search queries, analyzes retrieved content, and generates executable
+        pipeline nodes step by step.
+      </p>
+      <div class="buttons">
+        <a class="button is-primary is-medium" href="https://edited-strict-asp-closure.trycloudflare.com/" target="_blank" rel="noopener">
+          Open Full Demo &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://github.com/linhh29/Unified-MAS" target="_blank" rel="noopener">
+          Run Locally (GitHub)
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://edited-strict-asp-closure.trycloudflare.com/"
+          title="Unified-MAS Pipeline Explorer Demo"
+          loading="lazy">
+        </iframe>
+      </div>
+      <p style="line-height: 1.75; margin-top: 1rem; font-size: 0.92rem; color: #64748b;">
+        Custom search is disabled in the online demo (requires API keys). To try your own question locally:
+        <code>bash run_demo_inference.sh "Your task description" gemini-3-pro-preview</code>
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ PART 3: SKILL-MAS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section skill">
+      <h3 class="title is-4">Part 3: <a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a>: Mastering Evolutionary Breadth</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Capability and Experience Dilemma</h2>
+      <p style="line-height: 1.85;">
+        Part 1 establishes that the MAS paradigm itself is viable, yet current automatic-MAS systematically fail
+        to discover architectures that genuinely exploit multi-agent structure. There is a capability-experience dilemma within automatic-MAS:
+      </p>
+      <figure class="figure-card figure-medium" style="margin: 1.25rem auto;">
+        <img src="./assets/skill_background.png" alt="Overview of MAS paradigms and the Skill-MAS third path">
+        <figcaption>
+          Overview of MAS paradigms. (a)-(b) Comparison of existing Inference-time and
+          Training-time MAS, illustrating the dilemma between model capability and experience retention.
+          (c) Evolvable Skill-MAS bridges this gap by iteratively evolving the Meta-Skill, successfully coupling
+          high-capability LLMs with experience retentiveness.
+        </figcaption>
+      </figure>
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <h5>Inference-time automatic-MAS</h5>
+          <p>EvoAgent, AOrchestra, and AFlow leverage the strong reasoning of frozen frontier LLMs, but
+          the Meta-agent executes identical search routines every iteration with <strong>no cumulative
+          memory</strong>. It cannot learn from past failures or transfer diagnostic experience across runs.</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>Training-time automatic-MAS</h5>
+          <p>MAS&sup2; and MAS-Orchestra internalize orchestration capability by fine-tuning small LLMs
+          (typically 7B parameters), but are constrained by <strong>low capability ceilings</strong> and
+          prohibitively expensive to scale to frontier models (&gt;100B), where the strongest reasoning
+          capacities reside.</p>
+        </div>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        <strong>Is there a third path?</strong> One that decouples experience retention from parametric updates,
+        enabling a frozen frontier Meta-agent to progressively learn and refine its orchestration
+        expertise across diverse tasks?
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">The Third Path: Meta-Skill as an Evolvable Artifact</h2>
+      <p style="line-height: 1.85;">
+        We propose <strong><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></strong>, which conceptualizes the Meta-agent's high-level orchestration
+        capability as an <strong>evolvable Meta-Skill</strong>, i.e., a structured, natural-language artifact
+        (SKILL.md) that encodes reusable, strategy-level principles spanning the full orchestration
+        pipeline. Organized into three modules, the Meta-Skill captures architectural know-how
+        rather than overfitting to task-specific solutions:
+      </p>
+      <p style="line-height: 1.8; margin-bottom: 1rem; margin-top: 1rem;">
+        <span class="tag-pill green">Task Decomposition (the what)</span>
+        <span class="tag-pill blue">Agent Engineering (the who)</span>
+        <span class="tag-pill purple">Workflow Orchestration (the how)</span>
+      </p>
+      <figure class="figure-card figure-wide">
+        <img src="./assets/skill_method.png" alt="Skill-MAS evolutionary loop">
+        <figcaption>
+          <strong>Figure 12:</strong> The evolutionary loop of Skill-MAS. The Meta-Skill guides Multi-Trajectory
+          Rollout to compute distributional statistics over validation tasks. These metrics feed into
+          Selective Reflection to prioritize tasks and extract diagnostic evidence via hierarchical
+          trajectory reflection. Skill Optimization then leverages the evidence to refine the
+          Meta-Skill, driving iterative improvement in MAS generation quality.
+        </figcaption>
+      </figure>
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>Stage 1 &middot; Multi-Trajectory Rollout</h5>
+          <p>Sample <em>K</em> independent trajectories per validation task under the current Meta-Skill. Compute per-task uncertainty (score standard deviation) and difficulty (negated mean score) to characterize behavioral distributions.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 &middot; Priority Selection</h5>
+          <p>Fuse uncertainty and difficulty into a unified priority score, sort tasks, and apply elbow detection to select the most informative subset for reflection, concentrating the optimization budget.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 &middot; Hierarchical Reflection</h5>
+          <p>Within-task contrastive analysis compares high- vs. low-scoring trajectories; cross-task synthesis extracts recurring failure modes and ranks impactful patches into structured evidence.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 &middot; Skill Optimization</h5>
+          <p>The optimizer rewrites the Meta-Skill while preserving the three-module scaffold, removing ineffective rules, adding generalizable orchestration principles, and passing a structural validity check.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">Results: Better Cost-Performance with Transferable Skills</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/skill_table.png" alt="Skill-MAS main results">
+          <figcaption>
+            <strong>Table 1:</strong> Quantitative comparison of Skill-MAS against baselines across four LLMs and four
+            benchmarks. Skill-MAS-optimized outperforms all baselines by a substantial margin in nearly
+            all settings. With DeepSeek-V4-Flash, average performance rises from 33.72% to 41.05%.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/skill_cost.png" alt="Skill-MAS cost-performance trade-off">
+          <figcaption>
+            <strong>Figure 13:</strong> Cost-performance trade-off across MAS paradigms. Training-time approaches
+            achieve the lowest cost but worst performance; inference-time approaches improve performance
+            but incur the highest cost. Skill-MAS occupies the optimal position, achieving the highest
+            performance at moderate inference cost.
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        Even without iterative evolution, <strong>Skill-MAS-init</strong> already demonstrates competitive performance,
+        e.g., with Gemini-3.1-Flash it slightly surpasses the best baseline AFlow (21.68 vs. 21.29 avg.).
+        <strong>Skill-MAS-optimized</strong> outperforms all baselines by a substantial margin in nearly all settings,
+        achieving the highest average performance across all four LLMs, with DeepSeek-V4-Flash rising from 33.72%
+        to <strong>41.05%</strong>, and Qwen3.5-Plus from 32.61% to <strong>38.41%</strong>.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        The cost-performance trade-off reveals a clear split among the three paradigms: training-time MAS achieves
+        the lowest cost but worst performance; inference-time MAS improves accuracy at the highest inference cost.
+        Skill-MAS occupies a better position, by generating MAS in one shot with an evolved Meta-Skill rather
+        than re-optimizing per sample iteratively, it attains the best average performance at moderate cost.
+      </p>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/transfer_table.png" alt="Table 2: Transfer performance across LLMs and tasks">
+          <figcaption>
+            <strong>Table 2:</strong> Transfer performance across LLMs and tasks. Skill Source denotes the (LLM, Task)
+            where the Meta-Skill is evolved, and Test Setting denotes the (LLM, Task) where that Meta-Skill is evaluated.
+            &Delta; is measured against Skill-MAS-init.
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/transfer_fig.png" alt="Transfer heatmap across LLMs and tasks">
+          <figcaption>
+            <strong>Figure 14:</strong> Skill transferability heatmap across LLMs (DS: DeepSeek-V4-Flash, GPT:
+            GPT-5.4-Nano) and tasks (BCP: BrowseComp-Plus, VITA: VitaBench). Cross-LLM transfer succeeds because
+            trajectory analysis yields similar Meta-Skills regardless of backbone; cross-task transfer succeeds when
+            skills encode general orchestration patterns rather than domain-specific tricks.
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        To evaluate generalization, we analyze Meta-Skill transfer across LLMs and tasks. No-transfer settings
+        (matching Source and Test) achieve maximum gains, dominating the diagonal of the heatmap. Cross-LLM
+        transfer (same task, different backbone) follows closely; analyzing trajectories on an identical task
+        yields similar Meta-Skills regardless of the underlying LLM. Cross-task transfer (same LLM, different
+        benchmark) also delivers competitive performance, validating that evolution explicitly distills
+        task-agnostic orchestration strategies rather than domain-specific tricks.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        Critically, the evolved Meta-Skills are not mere task-specific patches: they encode
+        <strong>generalizable orchestration strategies</strong>. Only simultaneous transfer across both LLM and task
+        distributions (Panel C) exhibits weaker gains, reflecting the extreme difficulty of fully
+        out-of-distribution generalization, yet even there, transferred skills remain above the
+        Skill-MAS-init baseline.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">Meta-Skill Evolution: A Coherent Learning Arc</h2>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/skill_evolution.png" alt="Meta-Skill evolution trajectory">
+        <figcaption>
+          <strong>Figure 15:</strong> Meta-Skill evolution on BrowseComp-Plus. The skill evolution traces a
+          coherent arc: Module 1 (Task Decomposition) establishes epistemic scaffolding; Module 2
+          (Agent Engineering) introduces calibrated evaluation; Module 3 (Workflow Orchestration)
+          adds system-level resilience through backtracking and dynamic replanning.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85;">
+        Within this trajectory, skill evolution traces a coherent arc from how evidence is framed, through
+        how it is adjudicated, to how failures are remediated. Module 1 first establishes the epistemic
+        scaffolding: constraint prioritization and fan-out retrieval transform decomposition from flat
+        subtask partitioning into a relational search plan with structural cues. On this foundation,
+        Module 2 displaces brittle binary checks with calibrated evaluation, i.e., weighted constraint
+        satisfaction with partial-evidence fallback. Finally, Module 3 improves orchestration capability:
+        cross-entity bridging and merge-node re-execution shift the integration stage from passive
+        aggregation to active evidence recovery. Taken together, these updates delineate a progressive
+        Meta-Skill evolution from decomposition design, through agent-level epistemic control, to
+        system-level resilience.
+      </p>
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>Key Finding</h4>
+            <p>Skill-MAS achieves the best cost-performance trade-off among automatic-MAS paradigms by generating MAS in one shot with an evolved Meta-Skill. Even Skill-MAS-init is already competitive with strong baselines; iterative evolution yields the largest gains across all four Meta-agent backbones.</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>Key Insight</h4>
+            <p>Meta-Skills distill strategy-level orchestration principles (not task-specific fixes), enabling robust transfer across both unseen benchmarks and different LLMs. Augmenting a static Meta-agent with continuously evolving architectural knowledge is the key to breaking the capability-experience dilemma.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading left-rule">Gallery &amp; Online Demo</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        Explore <strong>pre-computed Skill-MAS artifacts</strong> in the Gallery to inspect evolved Meta-Skills,
+        three-stage MAS construction (task decomposition, agent engineering, workflow orchestration), and sample
+        rollouts across benchmarks. Use the Online Demo to run interactive inference with optimized skills.
+      </p>
+      <div class="buttons">
+        <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+          Open Gallery &rarr;
+        </a>
+        <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+          Open Online Demo &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+          Run Locally &rarr;
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://ports-baseball-paso-grow.trycloudflare.com/demo"
+          title="Skill-MAS Online Demo"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ SYNTHESIS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">Synthesis</h2>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        <strong>The Illusion of Multi-Agent Advantage</strong> conducts a systematic evaluation of six
+        representative automatic-MAS across multiple LLMs and benchmarks. The verdict is sobering:
+        CoT-SC usually matches or beats these frameworks at a fraction of the cost. Architectural
+        deconstruction further shows why: functional collapse to ensembling, role redundancy, heuristic
+        search that never learns, and routing policies blind to task structure.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></strong> tackles the
+        <em>what</em> of MAS design. It decouples domain-specific node synthesis from topological
+        orchestration, retrieving open-world knowledge offline to produce expert-level nodes (e.g.,
+        <span class="tag-pill">Legal_Element_Extractor</span> rather than "Expert1") that plug into
+        existing automatic-MAS without modifying their orchestrators, yielding consistent performance
+        gains with lower cost.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></strong> tackles the
+        <em>how</em>. It conceptualizes orchestration as an evolvable Meta-Skill refined through
+        multi-trajectory rollout and selective reflection, enabling a frozen frontier Meta-agent to
+        accumulate orchestration experience across tasks without parametric updates, achieving strong
+        performance at moderate inference cost with transferable skills across LLMs and benchmarks.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        Taken together, the central lesson is that multi-agent coordination is not inherently broken,
+        but today's automatic-MAS fail for identifiable reasons: they search without learning, generate
+        nodes without grounding, and converge on superficial complexity. External retrieval transforms
+        node generation from hallucinated naming into domain workflow design; evolvable Meta-Skills
+        transform orchestration search from repeated blind iteration into experience-driven refinement.
+        Honest diagnosis, domain depth, and evolutionary breadth are each necessary, and only in
+        combination can automatic-MAS begin to deliver on the promise they have so far merely illustrated.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUTURE DIRECTIONS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">Future Directions: Where Do We Go From Here?</h2>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        Based on the three studies above, we share a few preliminary thoughts on how automatic-MAS
+        might be designed going forward.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">1. Mechanistic Interpretability of MAS</h3>
+      <p style="line-height: 1.85;">
+        Our architectural deconstruction reveals that most MAS "coordination" is decorative rather
+        than functional. We need tools to <strong>verify that assigned agentic roles exert measurable
+        causal influence</strong> on the final decision. This means moving beyond accuracy-based evaluation
+        toward <strong>structural fidelity metrics</strong>, measuring whether task decomposition, parallelization,
+        and specialization actually manifest in generated workflows.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">2. Beyond Text: Multi-Modal MAS</h3>
+      <p style="line-height: 1.85;">
+        All current automatic-MAS frameworks operate exclusively in the text modality. However, many
+        real-world tasks demand agents that can reason over images, code, structured data, and tool
+        outputs simultaneously. Extending the Unified-MAS node synthesis paradigm to <strong>multi-modal
+        nodes</strong>, and evolving Meta-Skills that orchestrate heterogeneous agent pools, represents
+        a natural and impactful research direction.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">3. From Centralized to Decentralized Evolution</h3>
+      <p style="line-height: 1.85;">
+        Our current work focuses on centralized orchestration, where a single Meta-agent controls
+        the MAS topology. However, decentralized agent-team systems (e.g., Claude Code Agent Teams)
+        offer alternative scaling properties. A key open question is whether the Meta-Skill paradigm
+        can be extended to <strong>co-evolve decentralized coordination protocols</strong> in which agents learn
+        to negotiate, delegate, and collaborate without a central controller.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85; text-align: center; margin-bottom: 0;">
+        If you are interested in collaborating or discussing these ideas, please feel free to reach out at
+        <a href="mailto:hlin709@connect.hkust-gz.edu.cn">Hehai Lin</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACKNOWLEDGEMENTS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">Acknowledgements</h2>
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        Thanks to all co-authors of the three studies synthesized in this blog:
+        <em>The Illusion of Multi-Agent Advantage</em>, <em>Unified-MAS</em>, and <em>Skill-MAS</em>.
+        Their contributions shaped every part of this blog.
+        We also thank all prior works cited across these papers.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p class="thank-you">
+    If you find our work helpful, please consider citing our papers; we'd really appreciate it!
+  </p>
+  <p class="footer-links">
+    <a href="/blog/Unified-MAS/index.html">Unified-MAS</a> ·
+    <a href="/blog/Skill-MAS/index.html">Skill-MAS</a> ·
+    <a href="https://linhh29.github.io/">Homepage</a> ·
+    <a href="https://github.com/linhh29">GitHub</a>
+  </p>
+  <p class="footer-links">
+    <span class="blog-view-count is-loading" title="Total page views">
+      <i class="fas fa-eye" aria-hidden="true"></i>
+      <span data-blog-view-count>—</span> views
+    </span>
+  </p>
+  <p class="footer-attribution">
+    This website is licensed under a
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+  </p>
+  <p class="footer-attribution">
+    This means you are free to borrow the
+    <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">source code</a>
+    of this website, we just ask that you link back to this page in the footer.
+  </p>
+</footer>
+
+<script src="/blog/_shared/js/lang-switch.js"></script>
+<script type="module" src="/blog/_shared/js/view-count.js"></script>
+</body>
+</html>

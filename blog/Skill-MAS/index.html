@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Skill-MAS: Evolving Meta-Skill for Automatic Multi-Agent Systems">
+  <meta name="keywords" content="LLM, Multi-agent Systems, Automatic MAS Design, Meta-Skill, Skill Evolution">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill-MAS: Evolving Meta-Skill for Automatic Multi-Agent Systems</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/blog/_shared/css/view-count.css">
+  <link rel="stylesheet" href="/blog/_shared/css/i18n.css">
+
+  <style>
+    :root {
+      --gradient-start: #1e3a5f;
+      --gradient-end: #0e7490;
+      --accent: #0891b2;
+      --accent-dark: #155e75;
+      --card-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --border-color: rgba(255, 255, 255, 0.28);
+      --section-bg: #ffffff;
+      --page-bg: #eef2f7;
+    }
+
+    body {
+      background: var(--page-bg);
+      color: #1e293b;
+      font-family: "Noto Sans", sans-serif;
+    }
+
+    .hero.hero-gradient {
+      background: linear-gradient(145deg, var(--gradient-start) 0%, #164e63 55%, var(--gradient-end) 100%);
+      color: #fff;
+      padding: 2.5rem 0 3.5rem;
+      border-bottom: 4px solid #06b6d4;
+    }
+
+    .hero .publication-title {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero.hero-gradient strong,
+    .hero.hero-gradient .subtitle strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .meta-badges span {
+      display: inline-block;
+      margin: 0.3rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .cta-buttons a.button {
+      margin: 0.4rem;
+      font-weight: 600;
+    }
+
+    .author-list {
+      margin-top: 2rem;
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+
+    .author-list a {
+      color: #fff;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+    }
+
+    .author-list a:hover {
+      border-bottom-color: #fff;
+    }
+
+    .affiliation {
+      margin-top: 0.75rem;
+      opacity: 0.88;
+      font-size: 0.95rem;
+    }
+
+    .section-heading {
+      font-family: "Google Sans", "Noto Sans", sans-serif;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-heading.left-rule {
+      text-align: left;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .highlight-card {
+      background: var(--section-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid #dbeafe;
+    }
+
+    .feature-card {
+      background: #f9fafc;
+      border-radius: 14px;
+      padding: 1.6rem;
+      border: 1px solid #e0e7ff;
+      height: 100%;
+    }
+
+    .feature-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .feature-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .contributions-section .feature-card {
+      background: #ffffff;
+    }
+
+    .insight-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+    }
+
+    .insight-card h4 {
+      font-weight: 650;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .insight-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+      color: #1f2a44;
+    }
+
+    .insight-card.is-observation {
+      background: #ecfdf5;
+      border-left: 4px solid var(--accent);
+    }
+
+    .insight-card.is-insight {
+      background: #fff4e6;
+      border-left: 4px solid #f7971e;
+    }
+
+    .figure-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--card-shadow);
+      margin: 1.25rem auto;
+      border: 1px solid #eef0fb;
+    }
+
+    .figure-card img {
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-card figcaption {
+      padding: 1rem 1.1rem;
+      font-size: 0.88rem;
+      background: #f7f8fc;
+      line-height: 1.6;
+      text-align: left !important;
+    }
+
+    .highlight-card .figure-card {
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+      margin: 1rem auto;
+    }
+
+    .figure-card.figure-wide {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-narrow {
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-medium {
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-small {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: start;
+      margin-bottom: 1.25rem;
+    }
+
+    .figure-row .figure-card {
+      margin: 0;
+      max-width: none;
+    }
+
+    .figure-row .figure-card figcaption {
+      font-size: 0.88rem;
+      padding: 1rem 1.1rem;
+    }
+
+    .figure-row .figure-card.figure-row-right {
+      align-self: center;
+    }
+
+    .figure-row .figure-card.figure-row-right img {
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .figure-card.figure-wide img,
+    .figure-card.figure-narrow img,
+    .figure-card.figure-medium img,
+    .figure-card.figure-small img {
+      width: 100%;
+      height: auto;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .process-step {
+      background: white;
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.08);
+      min-width: 0;
+    }
+
+    .process-step h5 {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f766e;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .process-step p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .benchmark-stats {
+      margin-top: 1.25rem;
+    }
+
+    .benchmark-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+
+    .benchmark-stat {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      text-align: center;
+    }
+
+    .benchmark-stat .stat-label {
+      font-weight: 650;
+      color: #3a3f73;
+      font-size: 0.95rem;
+    }
+
+    .benchmark-stat .stat-desc {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .baseline-list {
+      margin-top: 1.25rem;
+      line-height: 1.85;
+    }
+
+    .baseline-list .baseline-heading {
+      font-weight: 650;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+
+    .baseline-list .baseline-items {
+      padding-left: 1.5rem;
+      border-left: 3px solid #e2e8f0;
+    }
+
+    .baseline-list .baseline-items div {
+      padding: 0.35rem 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .baseline-list .baseline-items div:last-child {
+      border-bottom: none;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .comparison-card {
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      background: #fff;
+    }
+
+    .comparison-card.bad {
+      border-top: 4px solid #ef4444;
+    }
+
+    .comparison-card.good,
+    .comparison-card.highlight {
+      border-top: 4px solid #10b981;
+    }
+
+    .comparison-card h5 {
+      font-weight: 650;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: #fff;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--accent-dark);
+      font-weight: 650;
+      font-size: 1rem;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .demo-banner:hover {
+      color: var(--accent-dark);
+      background: #ecfeff;
+      transform: translateY(-1px);
+    }
+
+    .demo-embed {
+      margin-top: 1.5rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e0e7ff;
+      box-shadow: var(--card-shadow);
+    }
+
+    .demo-embed iframe {
+      width: 100%;
+      height: 72vh;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2.5rem 1.5rem 3rem;
+      margin-top: 2rem;
+    }
+
+    .site-footer .thank-you {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .site-footer .footer-links {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .site-footer .footer-attribution {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+      line-height: 1.65;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-footer a {
+      color: #67e8f9;
+    }
+
+    .site-footer a:hover {
+      color: #a5f3fc;
+    }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    .module-pill {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin: 0.2rem;
+    }
+
+    .module-pill.what { background: #dbeafe; color: #1e40af; }
+    .module-pill.who { background: #dcfce7; color: #166534; }
+    .module-pill.how { background: #fce7f3; color: #9d174d; }
+  </style>
+  <link rel="stylesheet" href="./css/mas-showcase.css">
+</head>
+<body data-blog-id="skill-mas">
+
+<div class="lang-switch lang-switch-fixed"></div>
+
+<section class="hero hero-gradient">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="color: #ffffff; margin-bottom: 1rem;">
+            Skill-MAS
+          </h1>
+          <h2 class="subtitle is-4" style="max-width: 920px; margin: 0 auto 1.5rem; line-height: 1.5;">
+            Evolving Meta-Skill for Automatic Multi-Agent Systems
+          </h2>
+          <p class="subtitle is-5" style="opacity: 0.92; max-width: 920px; margin: 0 auto 1.6rem; line-height: 1.7; text-align: justify;">
+            A novel <strong>third path</strong> for automatic MAS that decouples experience retention from
+            parametric updates. Skill-MAS conceptualizes high-level orchestration as an evolvable
+            <strong>Meta-Skill</strong>, refined through <strong>Multi-Trajectory Rollout</strong> and
+            <strong>Selective Reflection</strong> — enabling frozen frontier LLMs to progressively master MAS
+            generation with a superior <strong>cost–performance trade-off</strong> and highly
+            <strong>transferable</strong> orchestration principles.
+          </p>
+
+          <div class="meta-badges">
+            <span>Meta-Skill Evolution</span>
+            <span>Multi-Trajectory Rollout</span>
+            <span>Selective Reflection</span>
+            <span>4 Complex Benchmarks</span>
+            <span>Cross-LLM Transfer</span>
+          </div>
+
+          <div class="lang-switch lang-switch-hero"></div>
+
+          <div class="cta-buttons" style="margin-top: 1.4rem;">
+            <div class="buttons is-centered">
+              <a class="button is-light is-medium" href="#">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>Paper</span>
+              </a>
+              <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-images"></i></span>
+                <span>Gallery</span>
+              </a>
+              <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-flask"></i></span>
+                <span>Online Demo</span>
+              </a>
+              <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-terminal"></i></span>
+                <span>Run Locally</span>
+              </a>
+            </div>
+            <div class="buttons is-centered">
+              <a class="button is-light is-medium" href="#Approach">
+                <span class="icon"><i class="fas fa-sitemap"></i></span>
+                <span>Method</span>
+              </a>
+              <a class="button is-primary is-medium" href="#Results">
+                <span class="icon"><i class="fas fa-chart-line"></i></span>
+                <span>Results</span>
+              </a>
+              <a class="button is-info is-medium" href="#Showcase">
+                <span class="icon"><i class="fas fa-project-diagram"></i></span>
+                <span>Workflows</span>
+              </a>
+              <a class="button is-info is-medium" href="#Analysis">
+                <span class="icon"><i class="fas fa-microscope"></i></span>
+                <span>Analysis</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="author-list">
+            <a href="https://linhh29.github.io/" target="_blank" rel="noopener noreferrer">Hehai Lin</a><sup>♠</sup>,
+            <a href="#">Qi Yang</a><sup>♢</sup>,
+            <a href="https://qcwthu.github.io/" target="_blank" rel="noopener noreferrer">Chengwei Qin</a><sup>♠</sup><sup>†</sup>
+          </div>
+          <p class="affiliation">
+            <sup>♠</sup> HKUST (Guangzhou) &nbsp;·&nbsp;
+            <sup>♢</sup> Ant Group<br>
+            <sup>†</sup> Corresponding author: <a href="mailto:chengweiqin@hkust-gz.edu.cn">Chengwei Qin</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding: 1.5rem 1.5rem 0;">
+  <div class="container is-max-desktop">
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/" target="_blank" rel="noopener" class="demo-banner">
+      <span style="font-size: 1.4rem;">&#127881;</span>
+      <span>NEW: Explore the Skill-MAS interactive hub to browse gallery builds and run the three-stage MAS builder live!</span>
+      <span style="font-size: 1.2rem;">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Abstract</h2>
+      <p style="line-height: 1.85;">
+        Large Language Model (LLM)-based automatic Multi-Agent Systems (MAS) generation has become a crucial
+        frontier for tackling complex tasks. However, existing methods face a dilemma between
+        <strong>model capability</strong> and <strong>experience retention</strong>. Inference-time MAS leverages
+        frozen frontier LLMs but repeats identical searches without learning from past experience. Conversely,
+        Training-time MAS internalizes experience via gradient updates but is constrained by the low capability
+        ceiling of smaller models, and is hard to scale to large frontier LLMs.
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        To bridge this gap, we propose <strong>Skill-MAS</strong>, a novel third path that decouples experience
+        retention from parametric updates by conceptualizing the high-level orchestration capability as an evolvable
+        <strong>Meta-Skill</strong>. Skill-MAS refines this architectural knowledge through a closed optimization loop:
+        <strong>(1) Multi-Trajectory Rollout</strong> samples a behavioral distribution for each task under the current
+        Meta-Skill; and <strong>(2) Selective Reflection</strong> adaptively selects priority tasks and applies
+        hierarchical contrastive analysis to distill systemic experience into generalizable, strategy-level principles.
+        Extensive experiments across four complex benchmarks and four distinct LLMs demonstrate that Skill-MAS not
+        only achieves remarkable performance gains but also maintains a favorable cost–performance trade-off. Further
+        analysis reveals that the evolved Meta-Skills are highly robust and exhibit strong transferability across
+        unseen tasks and different LLMs.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section contributions-section">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3 section-heading left-rule">Key Contributions</h2>
+    <div class="columns is-variable is-6 is-multiline" style="margin-top: 1.25rem;">
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>A New Third Path</h4>
+          <p>
+            We pioneer a paradigm that conceptualizes high-level orchestration behavior as an evolvable
+            Meta-Skill, enabling frozen frontier LLMs to refine architectural knowledge without costly
+            parametric updates.
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>Multi-Trajectory Rollout</h4>
+          <p>
+            Multiple independent rollouts per task convert single-trial outcomes into distributional
+            statistics — separating genuine capability from execution stochasticity via uncertainty and
+            difficulty scores.
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>Selective Reflection</h4>
+          <p>
+            Priority-driven task selection with adaptive elbow truncation, plus hierarchical contrastive
+            analysis (within-task then cross-task), distills failure modes into actionable skill patches.
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-half-desktop">
+        <div class="feature-card">
+          <h4>Better Cost–Performance Trade-off</h4>
+          <p>
+            By generating MAS in one shot with an evolved Meta-Skill rather than re-optimizing per sample,
+            Skill-MAS attains the best average performance at moderate cost — outperforming both
+            inference-time and training-time baselines.
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-half-desktop">
+        <div class="feature-card">
+          <h4>Transferable Meta-Skills</h4>
+          <p>
+            Evolved Meta-Skills encode generalizable orchestration strategies and transfer robustly across
+            unseen tasks and different backbone LLMs — validating task-agnostic skill evolution.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">The Capability–Experience Dilemma</h2>
+    <figure class="figure-card figure-wide">
+      <img src="./assets/background_preview.png" alt="Overview of MAS paradigms and the Skill-MAS third path">
+      <figcaption>
+        <strong>Figure 1:</strong> Overview of MAS paradigms. (a)-(b) Comparison of existing Inference-time and
+        Training-time MAS, illustrating the dilemma between model capability and experience retention.
+        (c) Evolvable Skill-MAS bridges this gap by iteratively evolving the Meta-Skill, successfully coupling
+        high-capability LLMs with experience retentiveness.
+      </figcaption>
+    </figure>
+
+    <div class="comparison-grid">
+      <div class="comparison-card bad">
+        <h5>Inference-time MAS</h5>
+        <p>EvoAgent, AOrchestra, AFlow — strong reasoning from frontier LLMs, but the Meta-agent executes identical search routines every iteration with no cumulative memory across runs.</p>
+      </div>
+      <div class="comparison-card bad">
+        <h5>Training-time MAS</h5>
+        <p>MAS², MAS-Orchestra — internalize orchestration via fine-tuning small LLMs, but constrained by low capability ceilings and prohibitively expensive to scale to &gt;100B models.</p>
+      </div>
+      <div class="comparison-card highlight">
+        <h5>Skill-MAS (Ours)</h5>
+        <p>Conceptualizes orchestration as an evolvable Meta-Skill (SKILL.md). A frozen frontier Meta-agent progressively refines strategy-level principles through rollout and reflection — no parametric updates needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Approach">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Skill-MAS Approach</h2>
+      <p style="margin-bottom: 1.5rem; line-height: 1.8;">
+        Skill-MAS models the Meta-agent's orchestration behavior as a structured <strong>Meta-Skill</strong>
+        <em>S</em>, organized into three modules spanning the full pipeline. Each evolution round <em>r</em>
+        proceeds through Multi-Trajectory Rollout and Selective Reflection, producing an improved skill
+        <em>S</em><sup>(r+1)</sup>. After <em>R</em> rounds, the validation-optimal skill <em>S</em>* is
+        selected for test evaluation.
+      </p>
+
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        <span class="module-pill what">Task Decomposition (the what)</span>
+        <span class="module-pill who">Agent Engineering (the who)</span>
+        <span class="module-pill how">Workflow Orchestration (the how)</span>
+      </p>
+
+      <figure class="figure-card figure-wide">
+        <img src="./assets/method_preview.png" alt="Skill-MAS evolutionary loop">
+        <figcaption>
+          <strong>Figure 2:</strong> The evolutionary loop of Skill-MAS. The Meta-Skill <em>S</em><sup>(r)</sup>
+          (task decomposition, agent engineering, and workflow topology) guides Multi-Trajectory Rollout to compute
+          distributional statistics. These metrics feed into Selective Reflection to prioritize tasks and extract
+          evidence <em>E</em> via hierarchical trajectory reflection. Skill Optimization then leverages <em>E</em> to
+          refine the Meta-Skill into <em>S</em><sup>(r+1)</sup>, driving iterative improvement in MAS generation.
+        </figcaption>
+      </figure>
+
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>Stage 1 · Multi-Trajectory Rollout</h5>
+          <p>Sample <em>K</em> independent trajectories per validation task under the current Meta-Skill. Compute per-task uncertainty (score std) and difficulty (negated mean score) to characterize behavioral distributions.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 · Priority Selection</h5>
+          <p>Fuse uncertainty and difficulty into a priority score, sort tasks, and apply elbow detection to select the most informative subset for reflection — concentrating the optimization budget.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 · Hierarchical Reflection</h5>
+          <p>Within-task contrastive analysis compares high- vs. low-scoring trajectories; cross-task synthesis extracts recurring failure modes and ranks impactful patches into structured evidence.</p>
+        </div>
+        <div class="process-step">
+          <h5>Stage 2 · Skill Optimization</h5>
+          <p>The optimizer rewrites the Meta-Skill while preserving the three-module scaffold — removing ineffective rules, adding generalizable orchestration principles, and passing a structural validity check.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">Benchmarks</h2>
+    <div class="highlight-card">
+      <p style="line-height: 1.8; margin-bottom: 0.75rem;">
+        We evaluate on four challenging benchmarks spanning deep research, expert-level mathematics,
+        multi-hop QA, and real-world interactive scenarios:
+      </p>
+      <div class="benchmark-stats">
+        <div class="benchmark-stats-grid">
+          <div class="benchmark-stat">
+            <div class="stat-label">DeepResearchBench</div>
+            <div class="stat-desc">Deep research tasks scored on comprehensiveness, insight, instruction-following, and readability</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">HLE-Math</div>
+            <div class="stat-desc">Humanity's Last Exam — complex expert-level mathematical reasoning evaluated by accuracy</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">BrowseComp-Plus</div>
+            <div class="stat-desc">Complex multi-hop dynamic question answering with retrieval, evaluated by accuracy</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">VitaBench</div>
+            <div class="stat-desc">Real-world daily scenarios requiring multi-tool calling, scored by rubric-based evaluator</div>
+          </div>
+        </div>
+      </div>
+      <div class="baseline-list">
+        <p class="baseline-heading">Baselines</p>
+        <div class="baseline-items">
+          <div><strong>Inference-time MAS:</strong> EvoAgent, AOrchestra, AFlow</div>
+          <div><strong>Training-time MAS:</strong> MAS², MAS-Orchestra</div>
+        </div>
+      </div>
+      <p style="line-height: 1.8; margin-top: 1rem;">
+        <strong>Meta-agent LLMs:</strong> Gemini-3.1-Flash, GPT-5.4-Nano, Qwen3.5-Plus, DeepSeek-V4-Flash.
+        All metrics are normalized to [0, 100%]. We report average performance and average inference cost (USD).
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Results">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3 section-heading left-rule">Main Results</h2>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">Quantitative Comparison</h3>
+      <figure class="figure-card figure-medium" style="margin: 1rem auto 1.25rem;">
+        <img src="./assets/table_main.png" alt="Table 1: Main results across four LLMs and four benchmarks">
+        <figcaption>
+          <strong>Table 1:</strong> Quantification comparison of Skill-MAS and baselines. Skill-MAS-init/optimized
+          correspond to Skill-MAS with <em>S</em><sup>(1)</sup>/<em>S</em>*. DRB: DeepResearchBench, HLE:
+          Humanity&rsquo;s Last Exam-Math, BCP: BrowseComp-Plus, VITA: VitaBench. Avg. reports average performance
+          and inference cost. Bold denotes the best result.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8;">
+        Even without iterative evolution, <strong>Skill-MAS-init</strong> demonstrates competitive performance —
+        e.g., with Gemini-3.1-Flash it slightly surpasses the best baseline AFlow (21.68 vs. 21.29 avg.).
+        <strong>Skill-MAS-optimized</strong> outperforms all baselines by a large margin in nearly all settings,
+        achieving the highest average performance across all four LLMs. With Qwen3.5-Plus, avg. performance
+        rises from 32.61% (init) to <strong>38.41%</strong> (optimized); with DeepSeek-V4-Flash, from 33.72% to
+        <strong>41.05%</strong>.
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">Superior Cost–Performance Trade-off</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        Training-time MAS achieves the lowest cost but worst performance; inference-time MAS improves performance
+        but incurs the highest inference cost. Skill-MAS occupies the best position — highest performance at
+        moderate cost by generating MAS in one shot with an evolved Meta-Skill:
+      </p>
+      <figure class="figure-card figure-small" style="margin: 0 auto;">
+        <img src="./assets/avg_perf_vs_cost.png" alt="Skill-MAS cost-performance trade-off">
+        <figcaption>
+          <strong>Figure 1:</strong> (d) Cost-performance trade-off analysis, highlighting Skill-MAS as a better
+          &ldquo;Third Path&rdquo; for automatic-MAS.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Analysis">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">Analysis &amp; Insights</h2>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">(a) Meta-Skill Transferability</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        We evaluate transfer across LLMs and tasks. No-transfer (diagonal) achieves maximum gains; cross-LLM
+        transfer (same task) follows closely; cross-task transfer (same LLM) also delivers competitive performance,
+        validating that evolved Meta-Skills learn task-agnostic strategies:
+      </p>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/transfer_table.png" alt="Table 2: Transfer performance across LLMs and tasks">
+          <figcaption>
+            <strong>Table 2:</strong> Transfer performance across LLMs and tasks. Skill Source denotes the (LLM, Task)
+            where the Meta-skill is evolved, and Test Setting denotes the (LLM, Task) where that Meta-skill is evaluated.
+            &Delta; is measured against Skill-MAS-init.
+          </figcaption>
+        </figure>
+        <figure class="figure-card figure-row-right">
+          <img src="./assets/transfer_fig.png" alt="Transfer heatmap across LLMs and tasks">
+          <figcaption>
+            <strong>Figure 3:</strong> Left: Skill transferability heatmap across LLMs (DS: DeepSeek-V4-Flash, GPT:
+            GPT-5.4-Nano) and tasks (BCP: BrowseComp-Plus, VITA: VitaBench).
+          </figcaption>
+        </figure>
+      </div>
+      <div class="columns is-multiline">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>Observation</h4>
+            <p>Cross-LLM transfer (Panel A) works well because trajectory analysis yields similar Meta-Skills regardless of backbone. Cross-task transfer (Panel B) also succeeds when skills encode general orchestration patterns rather than domain-specific tricks.</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>Insight</h4>
+            <p>Meta-Skills distill strategy-level principles — not task-specific fixes — enabling robust generalization across both unseen datasets and different LLMs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">(b) Scaling Multi-Trajectory Rollout</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        We ablate the rollout number <em>K</em> per task (default <em>K</em>=5). Performance consistently improves
+        with more trajectories, but with diminishing returns from 5 to 7:
+      </p>
+      <figure class="figure-card figure-small" style="margin: 0 auto 1rem;">
+        <img src="./assets/scaling.png" alt="Performance scaling with rollout number K">
+        <figcaption>
+          <strong>Figure 3:</strong> Right: Performance scaling across increasing multitrajectory rollout numbers
+          (<em>K</em> = 3, 5, 7).
+        </figcaption>
+      </figure>
+      <div class="insight-card is-insight">
+        <h4>Insight</h4>
+        <p>Performance improves consistently as the rollout number increases, indicating a clear positive correlation
+        between sampled trajectories and evolution quality. However, the gains exhibit diminishing returns: the
+        improvement from <em>K</em>=3 to 5 is larger than from 5 to 7, while a higher rollout number inevitably
+        incurs greater computational cost during evolution. In practice, this hyperparameter therefore requires a
+        careful trade-off between maximizing performance and managing evolution overhead.</p>
+      </div>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">(c) Ablation on Selective Reflection</h3>
+      <figure class="figure-card figure-small" style="margin: 0 auto 1rem;">
+        <img src="./assets/ablation.png" alt="Table 3: Ablation on selective reflection and multi-task learning">
+        <figcaption>
+          <strong>Table 3:</strong> Results of Skill-MAS with different settings.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        Without adaptive priority selection, both label-free variants (Full-Validation, Half-Validation) suffer a
+        performance drop but still surpass most baselines — highlighting the importance of elbow-based task
+        selection. Multi-task learning shows mixed results, with slight gains on VitaBench but drops on
+        BrowseComp-Plus.
+      </p>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">(d) Meta-Skill Evolution Trajectory</h3>
+      <figure class="figure-card figure-medium" style="margin: 0 auto 1rem;">
+        <img src="./assets/evolution.png" alt="Meta-Skill evolution on BrowseComp-Plus">
+        <figcaption>
+          <strong>Figure 4:</strong> Meta-Skill Evolution on BrowseComp-Plus.
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8;">
+        Skill evolution traces a coherent arc: Module 1 establishes epistemic scaffolding (constraint
+        prioritization, fan-out retrieval); Module 2 introduces calibrated evaluation (weighted constraint
+        satisfaction); Module 3 adds system-level resilience (cross-entity bridging, merge-node re-execution).
+      </p>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">(e) What Evolved MAS Look Like</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        On BrowseComp-Plus, baselines produce superficial parallel searches or linear chains without constraint
+        linking. Skill-MAS-optimized generates structured pipelines with clue-specific retrievers and
+        link-verification before final decisions:
+      </p>
+      <figure class="figure-card figure-medium" style="margin: 0 auto 1rem;">
+        <img src="./assets/case_bcp.png" alt="Case study on BrowseComp-Plus">
+        <figcaption>
+          <strong>Table 7:</strong> MAS structure comparison on BrowseComp-Plus (DeepSeek-V4-Flash).
+        </figcaption>
+      </figure>
+      <figure class="figure-card figure-medium" style="margin: 0 auto;">
+        <img src="./assets/case_vita.png" alt="Case study on VitaBench">
+        <figcaption>
+          <strong>Table 8:</strong> MAS structure comparison on VitaBench (DeepSeek-V4-Flash).
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Showcase">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Representative Generated Workflows</h2>
+      <p style="line-height: 1.8; margin-bottom: 0.5rem;">
+        A curated preview of <strong>Skill-MAS-generated MAS architectures</strong> from our Gallery (DeepSeek V4 Flash).
+        Each case shows the Stage-3 workflow topology — serial chains, parallel fan-out/fan-in, and iterative feedback loops —
+        laid out horizontally so you can read the full agent graph at a glance.
+      </p>
+      <div id="mas-showcase-root" class="mas-showcase" aria-label="Representative generated MAS structure diagrams"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Demo">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Gallery &amp; Online Demo</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        Want more? Browse the full Gallery for every evolved Meta-Skill and rollout artifact, or jump into the
+        <strong>Online Demo</strong> to build and run your own three-stage MAS pipeline interactively.
+      </p>
+      <div class="buttons">
+        <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+          Open Gallery &rarr;
+        </a>
+        <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+          Open Online Demo &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+          Run Locally &rarr;
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://ports-baseball-paso-grow.trycloudflare.com/demo"
+          title="Skill-MAS Online Demo"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p class="thank-you">
+    If you find this project helpful, please consider citing our paper — we'd really appreciate it!
+  </p>
+  <p class="footer-links">
+    Skill-MAS ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">Gallery</a> ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">Demo</a> ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">Run Locally</a> ·
+    <a href="https://linhh29.github.io/">Homepage</a> ·
+    <a href="/blog/Unified-MAS/index.html">Unified-MAS</a>
+  </p>
+  <p class="footer-links">
+    <span class="blog-view-count is-loading" title="Total page views">
+      <i class="fas fa-eye" aria-hidden="true"></i>
+      <span data-blog-view-count>—</span> views
+    </span>
+  </p>
+  <p class="footer-attribution">
+    This website is licensed under a
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+  </p>
+  <p class="footer-attribution">
+    This means you are free to borrow the
+    <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">source code</a>
+    of this website, we just ask that you link back to this page in the footer.
+  </p>
+</footer>
+
+<script src="/blog/_shared/js/lang-switch.js"></script>
+<script src="./js/mas-showcase.js"></script>
+<script type="module" src="/blog/_shared/js/view-count.js"></script>
+</body>
+</html>

@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Rethinking Automatic Multi-Agent Systems: From Illusion to Evolution: A unified perspective on why automatic-MAS fail and how to build them better">
+  <meta name="keywords" content="LLM, Multi-agent Systems, Automatic MAS Design, Meta-Skill, Domain-Specific Nodes, MAS Evaluation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>重构自动化多智能体系统：从幻象到进化</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/blog/_shared/css/view-count.css">
+  <link rel="stylesheet" href="/blog/_shared/css/i18n.css">
+
+  <style>
+    :root {
+      --gradient-start: #1a1a2e;
+      --gradient-end: #16213e;
+      --accent: #e94560;
+      --accent-dark: #c23152;
+      --accent2: #0f3460;
+      --accent3: #533483;
+      --card-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --border-color: rgba(255, 255, 255, 0.28);
+      --section-bg: #ffffff;
+      --page-bg: #f0f2f5;
+    }
+
+    body {
+      background: var(--page-bg);
+      color: #1e293b;
+      font-family: "Noto Sans", sans-serif;
+    }
+
+    .hero.hero-gradient {
+      background: linear-gradient(160deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: #fff;
+      padding: 2.5rem 0 3.5rem;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .hero .publication-title {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero.hero-gradient strong,
+    .hero.hero-gradient .subtitle strong {
+      color: #f8c291;
+      font-weight: 700;
+    }
+
+    .meta-badges span {
+      display: inline-block;
+      margin: 0.3rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .cta-buttons a.button {
+      margin: 0.4rem;
+      font-weight: 600;
+    }
+
+    .author-list {
+      margin-top: 2rem;
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+
+    .author-list a {
+      color: #f8c291;
+      border-bottom: 1px dotted rgba(248, 194, 145, 0.5);
+    }
+
+    .author-list a:hover {
+      border-bottom-color: #f8c291;
+    }
+
+    .affiliation {
+      margin-top: 0.75rem;
+      opacity: 0.88;
+      font-size: 0.95rem;
+    }
+
+    .section-heading {
+      font-family: "Google Sans", "Noto Sans", sans-serif;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-heading.left-rule {
+      text-align: left;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .highlight-card {
+      background: var(--section-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid #dbeafe;
+    }
+
+    .feature-card {
+      background: #f9fafc;
+      border-radius: 14px;
+      padding: 1.6rem;
+      border: 1px solid #e0e7ff;
+      height: 100%;
+    }
+
+    .feature-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .feature-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .contributions-section .feature-card {
+      background: #ffffff;
+    }
+
+    .insight-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+    }
+
+    .insight-card h4 {
+      font-weight: 650;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .insight-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+      color: #1f2a44;
+    }
+
+    .insight-card.is-observation {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+    }
+
+    .insight-card.is-insight {
+      background: #fff4e6;
+      border-left: 4px solid #f7971e;
+    }
+
+    .insight-card.is-warning {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+    }
+
+    .insight-card.is-future {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .figure-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--card-shadow);
+      margin: 1.25rem auto;
+      border: 1px solid #eef0fb;
+    }
+
+    .figure-card img {
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-card figcaption {
+      padding: 1rem 1.1rem;
+      font-size: 0.88rem;
+      background: #f7f8fc;
+      line-height: 1.6;
+      text-align: left !important;
+    }
+
+    .highlight-card .figure-card {
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+      margin: 1rem auto;
+    }
+
+    .figure-card.figure-wide {
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-narrow {
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-medium {
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-small {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-xs {
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-wide img,
+    .figure-card.figure-narrow img,
+    .figure-card.figure-medium img,
+    .figure-card.figure-small img,
+    .figure-card.figure-xs img {
+      width: 100%;
+      height: auto;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    .figure-card > .figure-row {
+      margin-bottom: 0;
+    }
+
+    .figure-row .figure-card {
+      margin: 0;
+      max-width: none;
+    }
+
+    .figure-row .figure-card figcaption {
+      font-size: 0.85rem;
+      padding: 0.9rem 1rem;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .process-step {
+      background: white;
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.08);
+      min-width: 0;
+    }
+
+    .process-step h5 {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f766e;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .process-step p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .comparison-card {
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      background: #fff;
+    }
+
+    .comparison-card.bad {
+      border-top: 4px solid #ef4444;
+    }
+
+    .comparison-card.good,
+    .comparison-card.highlight {
+      border-top: 4px solid #10b981;
+    }
+
+    .comparison-card h5 {
+      font-weight: 650;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-card p {
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .benchmark-stats {
+      margin-top: 1.25rem;
+    }
+
+    .benchmark-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+
+    .benchmark-stat {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      text-align: center;
+    }
+
+    .benchmark-stat .stat-label {
+      font-weight: 650;
+      color: #3a3f73;
+      font-size: 0.95rem;
+    }
+
+    .benchmark-stat .stat-desc {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    .tag-pill.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .tag-pill.blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .tag-pill.purple {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .tag-pill.green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .roadmap-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roadmap-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .roadmap-card.diagnose::before { background: #ef4444; }
+    .roadmap-card.deep::before     { background: #3b82f6; }
+    .roadmap-card.evolve::before    { background: #8b5cf6; }
+
+    .roadmap-card h4 {
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+    }
+
+    .roadmap-card .work-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 0.8rem;
+    }
+
+    a.blog-link {
+      color: var(--accent2);
+      text-decoration: underline;
+      text-decoration-color: rgba(15, 52, 96, 0.35);
+      text-underline-offset: 2px;
+    }
+
+    a.blog-link:hover {
+      color: var(--accent);
+    }
+
+    .demo-embed {
+      margin-top: 1.5rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e0e7ff;
+      box-shadow: var(--card-shadow);
+    }
+
+    .demo-embed iframe {
+      width: 100%;
+      height: 72vh;
+      min-height: 420px;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    .roadmap-card p {
+      line-height: 1.7;
+      font-size: 0.92rem;
+      color: #334155;
+    }
+
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2.5rem 1.5rem 3rem;
+      margin-top: 2rem;
+    }
+
+    .site-footer .thank-you {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .site-footer .footer-links {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .site-footer .footer-attribution {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+      line-height: 1.65;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-footer a {
+      color: #67e8f9;
+    }
+
+    .site-footer a:hover {
+      color: #a5f3fc;
+    }
+
+    .quote-box {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      color: #e0e7ff;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      border-left: 4px solid #f8c291;
+    }
+
+    .quote-box strong {
+      color: #f8c291;
+    }
+
+    .work-section {
+      border-left: 3px solid;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .work-section.illusion { border-left-color: #ef4444; }
+    .work-section.unified  { border-left-color: #3b82f6; }
+    .work-section.skill    { border-left-color: #8b5cf6; }
+
+    .work-section h3 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .work-section.illusion h3 { color: #dc2626; }
+    .work-section.unified h3  { color: #2563eb; }
+    .work-section.skill h3    { color: #7c3aed; }
+
+    .separator {
+      border: none;
+      border-top: 2px dashed #e2e8f0;
+      margin: 2.5rem 0;
+    }
+  </style>
+</head>
+<body data-blog-id="mas-rethink">
+
+<div class="lang-switch lang-switch-fixed"></div>
+
+<section class="hero hero-gradient">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="color: #ffffff; margin-bottom: 1rem;">
+            重构自动化多智能体系统
+          </h1>
+          <h2 class="subtitle is-4" style="max-width: 920px; margin: 0 auto 1.5rem; line-height: 1.5;">
+            从幻象到进化：构建更优多智能体系统的统一视角
+          </h2>
+          <p class="subtitle is-5" style="opacity: 0.92; max-width: 920px; margin: 0 auto 1.6rem; line-height: 1.7; text-align: justify;">
+            本文将我们关于自动化多智能体系统（MAS）的<strong>三项相互关联的研究</strong>串联为一个统一视角，系统诊断了当前<strong>自动化 MAS 为何表现不佳</strong>，并围绕<strong>领域深度</strong>与<strong>进化广度</strong>提出原则性的解决方案，为基于大语言模型的多智能体协作指明未来的设计方向。
+          </p>
+
+          <div class="meta-badges">
+            <span>MAS 评估</span>
+            <span>领域专用节点</span>
+            <span>元技能进化</span>
+            <span>架构解构</span>
+            <span>未来方向</span>
+          </div>
+
+          <div class="lang-switch lang-switch-hero"></div>
+
+          <div class="author-list">
+            <a href="https://linhh29.github.io/" target="_blank" rel="noopener noreferrer">Hehai Lin</a>,
+            <a href="https://qcwthu.github.io/" target="_blank" rel="noopener noreferrer">Chengwei Qin</a>
+          </div>
+          <p class="affiliation">
+            香港科技大学（广州）LAI 实验室
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 序章 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">序章：MAS 的承诺</h2>
+      <p style="line-height: 1.85;">
+        大语言模型（LLMs）的快速演进从根本上改变了人工智能的格局。**基于 LLM 的多智能体系统（MAS）** 作为一种强大的范式应运而生，旨在通过协作智能处理复杂任务——包括任务分解、角色专业化、并行执行、辩论及交叉验证。通过编排多个具备不同角色与能力的 LLM 智能体，MAS 得以应对超出任何单一模型能力范围的问题。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        传统上，设计有效的 MAS 需要人类专家投入大量手工工程。然而，近年来研究社区已转而拥抱<strong>自动化 MAS 生成</strong>范式——即通过框架自主发现智能体角色、通信拓扑与执行工作流，无需人类干预。其愿景是：让强大的 LLM 分析任务与轨迹，挖掘出超越人工设计方案的创新智能体工作流。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong>但这一愿景是否经得起推敲？</strong>过去数月中，我们系统地审视了自动化 MAS——从严格诊断其失败原因，到提出原则性的解决方案。本文将三项研究整合为一个统一视角：<strong>自动化 MAS 为何失败</strong>、<strong>如何赋予其领域专长（领域深度）</strong>，以及<strong>如何让其持续进化（进化广度）</strong>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 全局概览 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule" style="margin-bottom: 1.5rem;">全局概览</h2>
+    <div class="roadmap-grid">
+      <div class="roadmap-card diagnose">
+        <span class="tag-pill red">第一部分</span>
+        <h4 style="margin-top: 0.5rem; color: #dc2626;">诊断</h4>
+        <div class="work-title">多智能体优势的幻象</div>
+        <p>
+          系统性评估表明，自动化 MAS 通常不如对等的 CoT-SC 基线，却产生约 10 倍的推理成本。
+          架构解构暴露出功能性崩溃、角色冗余以及向平凡集成模式的系统性收敛。
+        </p>
+      </div>
+      <div class="roadmap-card deep">
+        <span class="tag-pill blue">第二部分</span>
+        <h4 style="margin-top: 0.5rem; color: #2563eb;">深化</h4>
+        <div class="work-title"><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></div>
+        <p>
+          将节点实现与拓扑编排解耦。通过外部知识检索离线合成领域专用节点，
+          将通用自动化 MAS 转化为领域专家，带来高达 14.2% 的性能提升，同时降低成本。
+        </p>
+      </div>
+      <div class="roadmap-card evolve">
+        <span class="tag-pill purple">第三部分</span>
+        <h4 style="margin-top: 0.5rem; color: #7c3aed;">进化</h4>
+        <div class="work-title"><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></div>
+        <p>
+          超越推理时和训练时方法的第三条路径：将编排建模为可进化的元技能，
+          让冻结的前沿 LLM 在多样化任务中逐步积累经验，持续优化其 MAS 生成策略。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ 第一部分：幻象 ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section illusion">
+      <h3 class="title is-4">第一部分：多智能体优势的幻象</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">核心问题：自动化 MAS 真的有效吗？</h2>
+      <p style="line-height: 1.85;">
+        主流观点认为多智能体系统优于单智能体系统（SAS），理由包括上下文保护、并行处理和分布式决策等优势。
+        这一预期推动了<strong>自动化 MAS</strong>的快速发展，涌现出 DyLAN、MAS-Zero、ADAS、AFlow、MaAS 和 MAS-Orchestra 等框架，
+        它们能够动态分解任务、配置智能体角色并管理执行流程，全程无需人类干预。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        我们针对这六个代表性的自动化 MAS，与一个简单的 SAS 基线——<strong>带自一致性的思维链（CoT-SC）</strong>——展开了严格的系统性评估。
+        评估覆盖多个 LLM，包括 GPT-4o、GPT-5、GPT-OSS-120B 和 Gemini-2.5-Pro，
+        并涵盖标准推理任务（GPQA-Diamond、HLE-Maths、SWE-Bench Lite）和复杂的智能体设置（BrowseComp-Plus）。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">结果：CoT-SC 在大多数情况下优于自动化 MAS</h2>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/main_results.png" alt="MAS 效率前沿：成本与准确率权衡">
+        <figcaption>
+          <strong>图 1：</strong> MAS 效率前沿。跨基准测试的成本与准确率权衡。
+          CoT-SC 在性能与成本效率之间实现了最优平衡。自动化 MAS（如 ADAS、MAS-Orchestra）经常产生约
+          10 倍于 SAS 基线的推理成本，却仅获得微不足道的收益，且未能提升较弱骨干模型的性能。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        结果令人警醒。在几乎所有基准测试中，<strong>CoT-SC 通常优于自动化 MAS 框架</strong>，
+        往往在不到 10% 的计算成本下达到更高的准确率。该评估得出三项关键发现：
+      </p>
+      <ul style="line-height: 1.85; margin-top: 0.8rem; padding-left: 1.5rem;">
+        <li><strong>1. 中端模型无增益：</strong>自动化 MAS 未能为 GPT-4o 或 GPT-OSS 等模型带来一致的改进。</li>
+        <li><strong>2. 模型层级优势：</strong>使用 CoT-SC 的单智能体 GPT-5 实例始终优于最复杂的基于 GPT-4o 的自动化 MAS，同时消耗不到一半的总 token 数。</li>
+        <li><strong>3. 存在能力门槛：</strong>显著的自动化 MAS 提升仅出现在使用 GPT-5 和 Gemini-2.5-Pro 的 HLE-Math 上，表明架构复杂性需要一定的基线推理能力才能体现优势。</li>
+      </ul>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">SMFR 诊断：任务适用性并非问题所在</h2>
+      <p style="line-height: 1.85;">
+        一个常见的质疑是，标准基准缺乏 MAS 展现优势所需的结构属性。为回应这一质疑，我们引入了
+        <strong>合成多跳金融推理（SMFR）</strong>数据集——一个诊断性基准，明确具备子任务分解、
+        上下文密集型输入以及清晰的并行化与专业化机会，与 Anthropic 关于 MAS 适用场景的指导原则一致。
+        每个问题都需要多步上下文提取、数值推理和跨投资者综合，且在设计中刻意排除了捷径策略。
+      </p>
+      <figure class="figure-card">
+        <div class="figure-row">
+          <img src="./assets/background_preview.png" alt="多智能体优势的幻象：预期与现实">
+          <img src="./assets/smfr_result.png" alt="SMFR 诊断基准结果：GPT-4o、GPT-OSS-120B 和 GPT-5">
+        </div>
+        <figcaption>
+          <strong>图 2：</strong> 多智能体优势的幻象。理论上描绘了专业化分工，现实中却充斥着冗余与功能崩溃（左）。
+          SMFR 诊断基准（右）提供了结构化的子任务分解，当架构设计得当时，Expert-MAS 可达到接近完美的分数。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        即使在明确的智能体需求下，自动化 MAS 也始终无法超越 CoT-SC 的效率。在 SMFR 上，GPT-5 搭配 CoT-SC 仅达到 49.1% 的准确率，
+        而我们的 Expert-MAS——借助 Python 执行器强制实施显式分解、角色专业化与确定性编排——达到了 <strong>96.7%</strong>。
+        这说明 MAS 范式本身是可行的，但<strong>当前的自动化 MAS 始终无法把握任务特定的结构性机会</strong>。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">架构解构：内部出了什么问题？</h2>
+      <p style="line-height: 1.85;">
+        为探究自动化 MAS<em>为何</em>表现不佳，我们系统性地解构了这六个自动化 MAS 生成的架构。
+        三种系统性的失败模式浮出水面，各自折射出架构复杂度与功能效用之间的根本性错位：
+      </p>
+
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <h5>功能崩溃与角色冗余</h5>
+          <p>在 DyLAN 中，超过 90% 的 GPT-5 案例中，智能体几乎立刻达成共识，退化为冗余的 CoT-SC 基线。在 MAS-Zero 中，验证器存在系统性位置偏差——超过 45% 的情况下优先选择上下文窗口中靠前的条目，导致后续搜索轮次沦为对最终输出几乎无因果影响的"昂贵旁观者"。</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>收敛于启发式伪迹</h5>
+          <p>ADAS 和 AFlow 实质上沦为启发式探索者，而非原则性优化器。ADAS 展现出非单调的搜索动态，准确率往往在早期触及峰值后随即退化。AFlow 的"优化"工作流退化为平凡的集成模式：在五个数据集上评估的 14 个最终工作流中，50% 仅是将单个自定义提示迭代三次后做聚合，结构上与 CoT-SC 毫无二致。</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>动态路由中的激励错位</h5>
+          <p>MaAS 在上下文密集型任务上退化为平凡的 I/O 调用（BrowseComp-Plus 上 74.2% 的激活），背后是成本主导优化的驱动。MAS-Orchestra 完全忽略其多样化的智能体池，无论任务难度如何，都收敛于 Debate 和 Reflexion 两类智能体的僵硬二元偏好，背离了其智能路由的设计初衷。</p>
+        </div>
+      </div>
+
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        <strong>集成陷阱：</strong>这种崩溃的主要驱动因素是对 CoT 和 CoT-SC 的依赖——它们被当作自动化 MAS 的基本构建块。
+        这些框架未能实现真正的协同，反而收敛于结构退化——在"优化图"的表象下，只是为了不断重新发现基本的集成模式。
+        约 10 倍的计算成本增量，换来的不过是一个冗余、路由混乱的标准 CoT-SC 变体。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">案例研究：失败的可视化证据</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/mas_zero_fail.png" alt="MAS-Zero 失败分析">
+          <figcaption>
+            <strong>图 3：</strong> MAS-Zero 验证器选择偏差。验证器过度偏好上下文窗口中靠前的条目，
+            导致后续多智能体搜索轮次对最终输出几乎无因果影响。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/aflow_fail.png" alt="AFlow 工作流退化">
+          <figcaption>
+            <strong>图 4：</strong> AFlow 优化工作流。其发现的 MAS 并未展现复杂协调，而是持续退化为平凡集成——
+            将单个自定义提示迭代三次后聚合，功能上与标准 CoT-SC 毫无二致。
+          </figcaption>
+        </figure>
+      </div>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/adas_fail.png" alt="ADAS 非单调搜索">
+          <figcaption>
+            <strong>图 5：</strong> ADAS 在 GPQA-Diamond 上的搜索动态。准确率往往在早期触及峰值随后退化，
+            表明性能提升来自随机的"幸运"迭代，而非结构性的进化。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/dylan_fail.png" alt="DyLAN 功能崩溃">
+          <figcaption>
+            <strong>图 6：</strong> DyLAN 的功能崩溃。在约 70% 的 GPT-4o 和超过 90% 的 GPT-5 案例中，
+            智能体几乎立刻达成共识，实际功能等同于一致表决的 CoT-SC 基线，而非动态协商系统。
+          </figcaption>
+        </figure>
+      </div>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/maas_fail.png" alt="MaAS 激励错位">
+          <figcaption>
+            <strong>图 7：</strong> MaAS 算子激活分布。在上下文密集型的 BrowseComp-Plus 上，
+            控制器退化为平凡的 I/O 调用（74.2% 的激活），背后是成本主导优化的驱动。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/maas_orchestra_fail.png" alt="MAS-Orchestra 难度无关策略">
+          <figcaption>
+            <strong>图 8：</strong> MAS-Orchestra 智能体选择分布。编排器无视其多样化的智能体池，
+            无论任务难度如何，始终收敛于 Debate 和 Reflexion 两类智能体的僵硬二元偏好——一种与难度无关的策略。
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ 第二部分：UNIFIED-MAS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section unified">
+      <h3 class="title is-4">第二部分：<a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a>：掌握领域深度</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">知识缺口：为何自动化 MAS 在专业领域失败</h2>
+      <p style="line-height: 1.85;">
+        第一部分表明，自动化 MAS 存在严重的架构退化问题。当应用于<strong>知识密集型领域</strong>（如医疗、
+        法律和金融）时，现有框架面临根本性瓶颈。它们要么依赖缺乏专业知识的通用节点静态库（如思维链、辩论），
+        要么尝试动态生成节点——但编排器受内部参数化知识的限制，不得不同时设计领域专用逻辑<em>并</em>优化高层拓扑。
+        这种<strong>架构耦合</strong>严重损害了系统的实际效能。
+      </p>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/unified_background.png" alt="Unified-MAS 范式概览">
+        <figcaption>
+          <strong>图 9：</strong> MAS 范式概览。(a) 专业领域中的性能退化——使用预定义节点的自动化 MAS 始终不及手动设计的领域专用 MAS。
+          (b)-(c) 现有范式在动态节点生成与拓扑灵活性之间陷入两难。
+          (d) Unified-MAS 利用开放世界知识生成领域专用节点，为现有自动化 MAS 框架赋能。
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">核心洞见：将"做什么"与"如何做"解耦</h2>
+      <p style="line-height: 1.85;">
+        我们提出<strong><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></strong>，通过离线节点合成将细粒度节点实现与拓扑编排解耦。
+        与让编排器同时承担设计领域专用智能体<em>和</em>优化其连接关系的任务不同，<a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a> 充当
+        <strong>离线节点合成器</strong>，在任何拓扑搜索开始之前生成专家级节点。该框架分两个阶段运行：
+      </p>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/unified_method.png" alt="Unified-MAS 两阶段流水线">
+        <figcaption>
+          <strong>图 10：</strong> Unified-MAS 两阶段流水线。(a) 基于搜索的节点生成通过关键词策略驱动的查询检索外部知识，
+          初始化领域专用节点。(b) 基于奖励的节点优化通过困惑度引导的奖励迭代识别和优化瓶颈节点。
+          (c) 生成的领域专用节点集无缝集成到任何现有自动化 MAS 框架中。
+        </figcaption>
+      </figure>
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>阶段一 · 关键词提取</h5>
+          <p>采样验证实例，沿七个维度提取关键词：领域、任务、实体、动作、约束、期望结果和隐性知识。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段一 · 策略搜索</h5>
+          <p>四种搜索策略分别针对背景知识（Scholar）、系统架构（Google）、代码仓库（GitHub）和评估基准，将节点合成扎根于真实领域知识。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 奖励评分</h5>
+          <p>在验证数据上执行节点，计算困惑度引导的奖励，衡量每个节点对最终答案的改进和一致性贡献。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 瓶颈优化</h5>
+          <p>每轮识别最低奖励节点，优化其提示或添加子调用，重复直至性能收敛，通常在 10 轮内完成。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">结果：更优的成本-性能权衡</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/table_main.png" alt="表 1：四个 LLM 和四个基准的主要结果">
+          <figcaption>
+            <strong>表 1.</strong> Unified-MAS 与基线在四个基准上的定量比较。
+            TP：TravelPlanner，HB：HealthBench，J1：J1Bench，DF：DeepFund。
+            蓝色高亮的行表示使用 Unified-MAS 领域专用节点增强的方法。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/unified_gap_cost.png" alt="Unified-MAS 性能和成本改进">
+          <figcaption>
+            <strong>图 11：</strong> Unified-MAS 带来的性能提升和成本降低。将 Unified-MAS 领域专用节点集成到
+            四个自动化 MAS 基线中，在四个 LLM 和四个基准上带来了从 <strong>+6.0% 至 +14.2%</strong> 的一致提升，
+            同时降低了推理成本。
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85;">
+        Unified-MAS 扮演了<strong>通用节点合成器</strong>的角色。生成的节点可直接插入 MAS-Zero、AFlow、
+        ScoreFlow 和 MAS²，无需修改其高层编排器，将通用自动化 MAS 提升为领域专家——
+        在四个 LLM 骨干上均取得了稳定收益。以 J1Bench（法律判决）为例，
+        Unified-MAS 生成了如下结构化的司法流水线：
+        <span class="tag-pill">法律要件提取器</span>
+        <span class="tag-pill">事实分析器</span>
+        <span class="tag-pill">责任推理器</span>
+        <span class="tag-pill">损害赔偿计算器</span>
+        <span class="tag-pill">判决起草器</span>，取代了动态生成方法通常产出的表面集成节点（"Expert1"、"Expert2"）：
+      </p>
+      <figure class="figure-card figure-wide" style="margin-top: 1.25rem;">
+        <img src="./assets/unified_mas_case.png" alt="J1Bench 节点对比：Unified-MAS vs 动态自动化 MAS 方法">
+        <figcaption>
+          <strong>案例研究 · J1Bench：</strong> 法律判决任务上生成节点的并排对比。
+          动态方法（AOrchestra、EvoAgent、MetaAgent）局限于通用编排原语或表面化的专家集成（"Expert#1"、"Expert#2"、"Expert#3"），
+          而 Unified-MAS 合成了根植于检索法律知识的领域司法流水线，拓扑结构适配于设计 LLM 的特性
+          （Gemini-3-Flash 生成简洁的宏观级工作流，GPT-5-Mini 则产出更细粒度的分解）。
+        </figcaption>
+      </figure>
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>关键发现</h4>
+            <p>外部检索是关键的区分因素：它将节点生成从幻觉命名转化为根植于真实领域知识的专家工作流设计。生成的节点蕴含了可追溯、立足于领域的推理阶段。</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>核心洞见</h4>
+            <p>Unified-MAS 不局限于任何单一设计 LLM。Gemini 模型合成简洁的宏观级工作流（约 5 至 6 个节点），而 GPT-5-Mini 偏好微观级粒度（约 10 个节点）：Unified-MAS 在所有骨干上均持续驱动显著收益。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading left-rule">流水线探索演示</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        浏览我们论文基准中的<strong>预计算搜索产物</strong>，观察 Unified-MAS 如何提取任务关键词、
+        制定多策略搜索查询、分析检索内容，并逐步生成可执行的流水线节点。
+      </p>
+      <div class="buttons">
+        <a class="button is-primary is-medium" href="https://edited-strict-asp-closure.trycloudflare.com/" target="_blank" rel="noopener">
+          打开完整演示 &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://github.com/linhh29/Unified-MAS" target="_blank" rel="noopener">
+          本地运行 (GitHub)
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://edited-strict-asp-closure.trycloudflare.com/"
+          title="Unified-MAS 流水线探索演示"
+          loading="lazy">
+        </iframe>
+      </div>
+      <p style="line-height: 1.75; margin-top: 1rem; font-size: 0.92rem; color: #64748b;">
+        在线演示中自定义搜索已禁用（需要 API 密钥）。如需本地尝试您自己的问题：
+        <code>bash run_demo_inference.sh "Your task description" gemini-3-pro-preview</code>
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ 第三部分：SKILL-MAS ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="work-section skill">
+      <h3 class="title is-4">第三部分：<a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a>：掌握进化广度</h3>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">能力与经验的两难困境</h2>
+      <p style="line-height: 1.85;">
+        第一部分验证了 MAS 范式本身是可行的，但当前的自动化 MAS 始终无法发现能真正发挥多智能体结构优势的架构。
+        自动化 MAS 面临着能力与经验的两难困境：
+      </p>
+      <figure class="figure-card figure-medium" style="margin: 1.25rem auto;">
+        <img src="./assets/skill_background.png" alt="MAS 范式和 Skill-MAS 第三条路径概览">
+        <figcaption>
+          MAS 范式概览。(a)-(b) 现有推理时和训练时 MAS 的比较，说明了模型能力与经验保留之间的两难。
+          (c) 可进化的 Skill-MAS 通过迭代进化元技能来弥合这一差距，成功地将高能力 LLM 与经验保留能力相结合。
+        </figcaption>
+      </figure>
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <h5>推理时自动化 MAS</h5>
+          <p>EvoAgent、AOrchestra 和 AFlow 利用冻结前沿 LLM 的强大推理能力，但元智能体每轮执行相同的搜索例程，<strong>没有累积记忆</strong>。它无法从过去的失败中学习，也无法跨运行传递诊断经验。</p>
+        </div>
+        <div class="comparison-card bad">
+          <h5>训练时自动化 MAS</h5>
+          <p>MAS² 和 MAS-Orchestra 通过微调小型 LLM（通常为 7B 参数）将编排能力内部化，但受限于<strong>较低的能力上限</strong>，且扩展到前沿模型（>100B）的代价高昂——而最强的推理能力恰恰集中于这些模型中。</p>
+        </div>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        <strong>是否存在第三条路径？</strong>一条将经验保留与参数更新解耦的路径，
+        让冻结的前沿元智能体在多样化任务中逐步积累经验，持续优化其编排能力？
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">第三条路径：元技能作为可进化的产物</h2>
+      <p style="line-height: 1.85;">
+        我们提出<strong><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></strong>，将元智能体的高层编排能力抽象为
+        <strong>可进化的元技能</strong>——一个结构化的自然语言产物（SKILL.md），蕴含了跨越整个编排流水线的
+        可复用、策略级原则。元技能组织为三个模块，把握的是架构性知识，而非对任务特定解法的过拟合：
+      </p>
+      <p style="line-height: 1.8; margin-bottom: 1rem; margin-top: 1rem;">
+        <span class="tag-pill green">任务分解（做什么）</span>
+        <span class="tag-pill blue">智能体工程（谁来做）</span>
+        <span class="tag-pill purple">工作流编排（如何做）</span>
+      </p>
+      <figure class="figure-card figure-wide">
+        <img src="./assets/skill_method.png" alt="Skill-MAS 进化循环">
+        <figcaption>
+          <strong>图 12：</strong> Skill-MAS 的进化循环。元技能引导多轨迹推演以计算验证任务上的分布统计量。
+          这些指标输入选择性反思以按优先级排序任务，并通过层次化轨迹反思提取诊断证据。
+          技能优化随后利用证据优化元技能，驱动 MAS 生成质量的迭代改进。
+        </figcaption>
+      </figure>
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>阶段一 · 多轨迹推演</h5>
+          <p>在当前元技能下对每个验证任务采样 <em>K</em> 条独立轨迹，计算每个任务的不确定性（分数标准差）和难度（负均值分数）以刻画行为分布。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 优先级选择</h5>
+          <p>将不确定性和难度融合为统一的优先级分数，排序任务，应用肘部检测选择最具信息量的子集进行反思，集中优化预算。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 层次化反思</h5>
+          <p>任务内对比分析比较高分与低分轨迹；跨任务综合提取重复出现的失败模式，将有影响力的修补方案排序为结构化证据。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 技能优化</h5>
+          <p>优化器在保留三模块框架的前提下重写元技能，移除无效规则，添加可泛化的编排原则，并通过结构性有效性检查。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">结果：更优的成本-性能与可迁移技能</h2>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/skill_table.png" alt="Skill-MAS 主要结果">
+          <figcaption>
+            <strong>表 1：</strong> Skill-MAS 与基线的定量比较，涵盖四个 LLM 和四个基准。
+            Skill-MAS 优化版在几乎所有设置中均以显著优势超越所有基线。
+            使用 DeepSeek-V4-Flash，平均性能从 33.72% 提升至 41.05%。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/skill_cost.png" alt="Skill-MAS 成本-性能权衡">
+          <figcaption>
+            <strong>图 13：</strong> 各 MAS 范式的成本-性能权衡。训练时方法实现最低成本但性能最差；
+            推理时方法提升性能但推理成本最高。Skill-MAS 占据最优位置，以中等推理成本实现最高性能。
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        即便不做迭代进化，<strong>Skill-MAS 初始版</strong>已展现出有竞争力的性能——例如，使用 Gemini-3.1-Flash 时，
+        它略微超越了最佳基线 AFlow（平均 21.68 vs. 21.29）。<strong>Skill-MAS 优化版</strong>在几乎所有设置中
+        均以显著优势超越全部基线，在四个 LLM 上均达到了最高平均性能。使用 DeepSeek-V4-Flash，
+        平均性能从 33.72% 提升至 <strong>41.05%</strong>；Qwen3.5-Plus 则从 32.61% 提升至 <strong>38.41%</strong>。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        成本-性能权衡展现出三种范式之间的清晰分野：训练时 MAS 成本最低但性能最差；
+        推理时 MAS 以最高的推理成本换取精度提升。Skill-MAS 占据了更优的位置——通过进化后的元技能
+        一次性生成 MAS，而非对每个样本重新迭代优化，以中等成本取得了最佳平均性能。
+      </p>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/transfer_table.png" alt="表 2：跨 LLM 和任务的迁移性能">
+          <figcaption>
+            <strong>表 2：</strong> 跨 LLM 和任务的迁移性能。技能来源表示元技能进化的（LLM，任务）设置，
+            测试设置表示评估该元技能的（LLM，任务）设置。Δ 是相对于 Skill-MAS 初始版的测量值。
+          </figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="./assets/transfer_fig.png" alt="跨 LLM 和任务的迁移热力图">
+          <figcaption>
+            <strong>图 14：</strong> 跨 LLM（DS：DeepSeek-V4-Flash，GPT：GPT-5.4-Nano）和
+            任务（BCP：BrowseComp-Plus，VITA：VitaBench）的技能可迁移性热力图。
+            跨 LLM 迁移成功，是因为轨迹分析产生的元技能相似，不受骨干模型影响；
+            跨任务迁移在技能蕴含通用编排模式而非领域专用技巧时，同样能够成功。
+          </figcaption>
+        </figure>
+      </div>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        为评估泛化能力，我们分析了元技能在跨 LLM 和跨任务场景下的迁移表现。不迁移设置（来源与测试匹配）
+        取得了最大增益，主导热力图的对角线。跨 LLM 迁移（相同任务、不同骨干）紧随其后——在相同任务上分析轨迹
+        产生的元技能相似，不受底层 LLM 影响。跨任务迁移（相同 LLM、不同基准）同样展现出有竞争力的性能，
+        验证了进化过程明确提炼出的是任务无关的编排策略，而非领域专用技巧。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        尤为关键的是，进化后的元技能并非仅仅是任务特定的修补：它们蕴含了<strong>可泛化的编排策略</strong>。
+        只有同时跨 LLM 和任务分布进行迁移（面板 C）时，增益才相对较弱，这反映了完全分布外泛化的极端难度——
+        但即便如此，迁移后的技能仍维持在 Skill-MAS 初始版基线之上。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading">元技能进化：一条连贯的学习弧线</h2>
+      <figure class="figure-card figure-medium">
+        <img src="./assets/skill_evolution.png" alt="元技能进化轨迹">
+        <figcaption>
+          <strong>图 15：</strong> BrowseComp-Plus 上的元技能进化。技能进化描绘了一条连贯的弧线：
+          模块 1（任务分解）建立认知脚手架；模块 2（智能体工程）引入校准评估；
+          模块 3（工作流编排）通过回溯和动态重规划增加系统级韧性。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.85;">
+        在此轨迹中，技能进化描绘了一条连贯的弧线：从证据如何组织框架，到如何裁决，再到如何补救失败。
+        模块 1 首先建立认知脚手架——约束优先级排序与扇出检索将分解从平面的子任务划分，转化为富含结构线索的关系搜索规划。
+        在此基础上，模块 2 以校准评估取代脆弱的二元检查——即带部分证据兜底的加权约束满足。
+        最后，模块 3 提升编排能力——跨实体桥接与合并节点重执行，将集成阶段从被动聚合转变为主动证据恢复。
+        综合来看，这些更新勾勒出一条渐进式的元技能进化路径：从分解设计，到智能体级认知控制，再到系统级韧性。
+      </p>
+      <div class="columns is-multiline" style="margin-top: 1.25rem;">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>关键发现</h4>
+            <p>Skill-MAS 通过进化的元技能一次性生成 MAS，在自动化 MAS 范式中实现了最佳成本-性能权衡。即便 Skill-MAS 初始版已展现出与强基线相当的竞争力；迭代进化在所有四个元智能体骨干上带来了最大的增益。</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>核心洞见</h4>
+            <p>元技能提炼出策略级的编排原则（而非任务特定的修补），使得元技能能够在未见基准和不同 LLM 之间稳健迁移。用持续进化的架构知识增强静态元智能体，是打破能力-经验两难困境的关键。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <h2 class="title is-4 section-heading left-rule">画廊与在线演示</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        在画廊中探索<strong>预计算的 Skill-MAS 产物</strong>，查看进化的元技能、
+        三阶段 MAS 构建（任务分解、智能体工程、工作流编排）以及跨基准的样本推演。
+        使用在线演示以优化后的技能运行交互式推理。
+      </p>
+      <div class="buttons">
+        <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+          打开画廊 &rarr;
+        </a>
+        <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+          打开在线演示 &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+          本地运行 &rarr;
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://ports-baseball-paso-grow.trycloudflare.com/demo"
+          title="Skill-MAS 在线演示"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="separator" style="max-width: 820px; margin-left: auto; margin-right: auto;">
+
+<!-- ============ 综合总结 ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">综合总结</h2>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        <strong>《多智能体优势的幻象》</strong>对六个代表性自动化 MAS 展开了系统性评估，涵盖多个 LLM 和基准。
+        结论令人警醒：CoT-SC 通常以极低的成本匹敌或超越这些框架。架构解构进一步揭示了症结所在——
+        功能崩溃为集成、角色冗余、从不学习的启发式搜索，以及对任务结构视而不见的路由策略。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong><a class="blog-link" href="/blog/Unified-MAS/index.html">Unified-MAS</a></strong> 解决了 MAS 设计的
+        <em>"做什么"</em>问题。它将领域专用节点合成与拓扑编排解耦，离线检索开放世界知识
+        生成专家级节点（例如，<span class="tag-pill">法律要件提取器</span>而非 "Expert1"），
+        这些节点可直接插入现有自动化 MAS，无需修改其编排器，以更低的成本带来一致的性能提升。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        <strong><a class="blog-link" href="/blog/Skill-MAS/index.html">Skill-MAS</a></strong> 解决了
+        <em>"如何做"</em>问题。它将编排抽象为可进化的元技能，通过多轨迹推演和选择性反思加以优化，
+        让冻结的前沿元智能体无需参数更新即可跨任务积累编排经验，
+        以中等推理成本实现强劲性能，且技能可在 LLM 和基准之间迁移。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1.5rem;">
+        综合来看，最核心的教训在于：多智能体协作本身并非固有缺陷，当今的自动化 MAS 失败的原因清晰可辨——
+        它们在缺乏学习的情况下盲目搜索，在毫无根基的情况下生成节点，最终收敛于表面的复杂。
+        外部检索将节点生成从幻觉命名转化为领域工作流设计；可进化的元技能将编排搜索从重复的盲目迭代转化为经验驱动的优化。
+        不回避问题的诊断、领域深度和进化广度，三者各自不可或缺——唯有三者结合，自动化 MAS 才能开始兑现其迄今为止仅仅停留在纸面上的承诺。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 未来方向 ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">未来方向：我们该走向何方？</h2>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        基于上述三项研究，我们就自动化 MAS 未来的设计方向分享几点初步思考。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">1. MAS 的机制可解释性</h3>
+      <p style="line-height: 1.85;">
+        我们的架构解构表明，大多数 MAS 的所谓"协调"不过是装饰，并未真正奏效。我们需要工具来<strong>检验每个智能体角色是否对最终决策产生了可测量的因果影响</strong>。
+        这意味着从基于准确率的评估，转向<strong>结构保真度指标</strong>——以判断任务分解、并行化和专业化是否真正在生成的工作流中落地。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">2. 超越文本：多模态 MAS</h3>
+      <p style="line-height: 1.85;">
+        当前所有自动化 MAS 框架仅在文本模态中运行。然而，许多现实世界任务要求智能体能够同时推理图像、代码、结构化数据和工具输出。
+        将 Unified-MAS 节点合成范式扩展到<strong>多模态节点</strong>，并进化能够编排异构智能体池的元技能，
+        代表了一个自然而富有影响力的研究方向。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">3. 从集中式到分布式进化</h3>
+      <p style="line-height: 1.85;">
+        我们当前的工作集中于集中式编排，即单一元智能体控制 MAS 拓扑。然而，分布式智能体团队系统（如 Claude Code Agent Teams）
+        提供了替代的扩展特性。一个关键开放问题是元技能范式是否可以扩展到<strong>协同进化分布式协调协议</strong>，
+        使得智能体能够在没有中央控制器的情况下学习协商、委托和协作。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <p style="line-height: 1.85; text-align: center; margin-bottom: 0;">
+        如果您对合作或讨论这些想法感兴趣，欢迎随时联系
+        <a href="mailto:hlin709@connect.hkust-gz.edu.cn">Hehai Lin</a>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 致谢 ============ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">致谢</h2>
+    <div class="highlight-card">
+      <p style="line-height: 1.85;">
+        感谢本文所综合的三项研究——《多智能体优势的幻象》、《Unified-MAS》和《Skill-MAS》——的所有合作者。
+        他们的贡献塑造了本文的每一个部分。我们也感谢这些论文中引用的所有先前工作。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p class="thank-you">
+    如果您觉得我们的工作有帮助，请考虑引用我们的论文，我们将不胜感激！
+  </p>
+  <p class="footer-links">
+    <a href="/blog/Unified-MAS/index.html">Unified-MAS</a> ·
+    <a href="/blog/Skill-MAS/index.html">Skill-MAS</a> ·
+    <a href="https://linhh29.github.io/">首页</a> ·
+    <a href="https://github.com/linhh29">GitHub</a>
+  </p>
+  <p class="footer-links">
+    <span class="blog-view-count is-loading" title="总页面浏览量">
+      <i class="fas fa-eye" aria-hidden="true"></i>
+      <span data-blog-view-count>—</span> 次浏览
+    </span>
+  </p>
+  <p class="footer-attribution">
+    本网站采用
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a> 许可。
+  </p>
+  <p class="footer-attribution">
+    这意味着您可以自由使用本网站的
+    <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">源代码</a>，
+    我们只要求您在页脚中链接回本页面。
+  </p>
+</footer>
+
+<script src="/blog/_shared/js/lang-switch.js"></script>
+<script type="module" src="/blog/_shared/js/view-count.js"></script>
+</body>
+</html>

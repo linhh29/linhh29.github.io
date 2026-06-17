@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "model": "DeepSeek V4 Flash",
+  "cases": [
+    {
+      "id": "serial-hlemath",
+      "topology": "serial",
+      "topology_label": "Serial Pipeline",
+      "dataset": "HLEMATH",
+      "sample_stem": "0031__31_t0",
+      "task_id": 31,
+      "summary": "Linear interpret → compute → verify → format chain for a complete-intersection cohomology problem.",
+      "dataset_title": "HLE-Math",
+      "domain": "Mathematical Reasoning",
+      "question_preview": "Let $X$ be a complete intersection of degree (2,2) in the complex projective space $CP^{102}$, that is, a variety given by two generic poly…",
+      "nodes": [
+        "interpret_problem",
+        "compute_cohomology",
+        "verify_result",
+        "format_answer"
+      ],
+      "edges": [
+        {
+          "from": "interpret_problem",
+          "to": "compute_cohomology",
+          "type": "sequential"
+        },
+        {
+          "from": "compute_cohomology",
+          "to": "verify_result",
+          "type": "sequential"
+        },
+        {
+          "from": "verify_result",
+          "to": "format_answer",
+          "type": "sequential"
+        }
+      ],
+      "agent_count": 4,
+      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+    },
+    {
+      "id": "parallel-drb",
+      "topology": "parallel",
+      "topology_label": "Parallel (Fan-out / Fan-in)",
+      "dataset": "DeepResearchBench",
+      "sample_stem": "0000__0_t0",
+      "task_id": 0,
+      "summary": "Context scoping fans out to nutritional analysis and meal composition, then synthesizes a two-week meal plan.",
+      "dataset_title": "Deep Research Bench",
+      "domain": "Deep Research",
+      "question_preview": "我今年五十三岁，体重一百六十斤，为我提供一份两周的食谱，包含更科学、健康、简单易做的营养搭配（我是中国人）",
+      "nodes": [
+        "context_scoping",
+        "nutritional_analysis",
+        "meal_composition",
+        "plan_synthesis"
+      ],
+      "edges": [
+        {
+          "from": "context_scoping",
+          "to": "nutritional_analysis",
+          "type": "fan_out"
+        },
+        {
+          "from": "context_scoping",
+          "to": "meal_composition",
+          "type": "fan_out"
+        },
+        {
+          "from": "nutritional_analysis",
+          "to": "plan_synthesis",
+          "type": "fan_in"
+        },
+        {
+          "from": "meal_composition",
+          "to": "plan_synthesis",
+          "type": "fan_in"
+        }
+      ],
+      "agent_count": 4,
+      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+    },
+    {
+      "id": "parallel-bcp",
+      "topology": "parallel",
+      "topology_label": "Parallel Branches",
+      "dataset": "BrowseComp-Plus",
+      "sample_stem": "0000__0_t0",
+      "task_id": 0,
+      "summary": "Multi-hop retrieval QA: candidate identification fans out to parallel actress/creator verification before plot matching.",
+      "dataset_title": "BrowseComp-Plus",
+      "domain": "Retrieval QA",
+      "question_preview": "There's a non-English series, released before 2003, starring an actress who debuted on television in 1995. The show's creator, born in 1973…",
+      "nodes": [
+        "parse_query_extract_constraints",
+        "identify_candidates_via_unique_constraints",
+        "verify_actress_debut",
+        "verify_creator_birth_and_role",
+        "match_plot_summary",
+        "consolidate_and_answer"
+      ],
+      "edges": [
+        {
+          "from": "parse_query_extract_constraints",
+          "to": "identify_candidates_via_unique_constraints",
+          "type": "sequential"
+        },
+        {
+          "from": "identify_candidates_via_unique_constraints",
+          "to": "verify_actress_debut",
+          "type": "sequential"
+        },
+        {
+          "from": "identify_candidates_via_unique_constraints",
+          "to": "verify_creator_birth_and_role",
+          "type": "sequential"
+        },
+        {
+          "from": "verify_actress_debut",
+          "to": "match_plot_summary",
+          "type": "sequential"
+        },
+        {
+          "from": "verify_creator_birth_and_role",
+          "to": "match_plot_summary",
+          "type": "sequential"
+        },
+        {
+          "from": "match_plot_summary",
+          "to": "consolidate_and_answer",
+          "type": "sequential"
+        }
+      ],
+      "agent_count": 6,
+      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+    },
+    {
+      "id": "loop-hlemath",
+      "topology": "loop",
+      "topology_label": "Iterative Loop",
+      "dataset": "HLEMATH",
+      "sample_stem": "0116__116_t0",
+      "task_id": 116,
+      "summary": "Sequential derivation pipeline with a feedback loop from verify_solution back to derive_bounds (up to 3 iterations).",
+      "dataset_title": "HLE-Math",
+      "domain": "Mathematical Reasoning",
+      "question_preview": "Twenty chairs stand in a row. From time to time a person comes and sits on one of the empty chairs. At the same time, one of his/her neighb…",
+      "nodes": [
+        "interpret_problem",
+        "derive_bounds",
+        "construct_configuration",
+        "verify_solution",
+        "finalize_answer"
+      ],
+      "edges": [
+        {
+          "from": "interpret_problem",
+          "to": "derive_bounds",
+          "type": "sequential"
+        },
+        {
+          "from": "derive_bounds",
+          "to": "construct_configuration",
+          "type": "sequential"
+        },
+        {
+          "from": "construct_configuration",
+          "to": "verify_solution",
+          "type": "sequential"
+        },
+        {
+          "from": "verify_solution",
+          "to": "finalize_answer",
+          "type": "sequential"
+        },
+        {
+          "from": "verify_solution",
+          "to": "derive_bounds",
+          "type": "feedback_loop"
+        }
+      ],
+      "agent_count": 5,
+      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+    },
+    {
+      "id": "parallel-vita",
+      "topology": "parallel",
+      "topology_label": "Multi-track Parallel",
+      "dataset": "VitaBench",
+      "sample_stem": "0000__A0807005_t0",
+      "task_id": "A0807005",
+      "dataset_title": "VitaBench",
+      "domain": "Agentic Assistants",
+      "question_preview": "招待日本朋友：订温州菜馆、选购伴手礼与包装袋、安排景区游览——三条并行子流程汇总为最终报告。",
+      "summary": "Three independent tool-use tracks (restaurant, gift, scenic) run in parallel, each explore → evaluate → execute, then merge at final_report.",
+      "agent_count": 9,
+      "nodes": [
+        "restaurant_exploration",
+        "restaurant_evaluation",
+        "restaurant_reservation",
+        "gift_exploration",
+        "gift_evaluation",
+        "gift_purchase",
+        "scenic_exploration",
+        "scenic_selection",
+        "final_report"
+      ],
+      "edges": [
+        {
+          "from": "restaurant_exploration",
+          "to": "restaurant_evaluation",
+          "type": "sequential"
+        },
+        {
+          "from": "restaurant_evaluation",
+          "to": "restaurant_reservation",
+          "type": "sequential"
+        },
+        {
+          "from": "gift_exploration",
+          "to": "gift_evaluation",
+          "type": "sequential"
+        },
+        {
+          "from": "gift_evaluation",
+          "to": "gift_purchase",
+          "type": "sequential"
+        },
+        {
+          "from": "scenic_exploration",
+          "to": "scenic_selection",
+          "type": "sequential"
+        },
+        {
+          "from": "restaurant_reservation",
+          "to": "final_report",
+          "type": "sequential"
+        },
+        {
+          "from": "gift_purchase",
+          "to": "final_report",
+          "type": "sequential"
+        },
+        {
+          "from": "scenic_selection",
+          "to": "final_report",
+          "type": "sequential"
+        }
+      ],
+      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+    }
+  ]
+}

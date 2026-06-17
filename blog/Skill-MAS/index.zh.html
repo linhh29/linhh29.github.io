@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Skill-MAS: Evolving Meta-Skill for Automatic Multi-Agent Systems">
+  <meta name="keywords" content="LLM, Multi-agent Systems, Automatic MAS Design, Meta-Skill, Skill Evolution">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill-MAS：进化元技能，实现自动化多智能体系统生成</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/blog/_shared/css/view-count.css">
+  <link rel="stylesheet" href="/blog/_shared/css/i18n.css">
+
+  <style>
+    :root {
+      --gradient-start: #1e3a5f;
+      --gradient-end: #0e7490;
+      --accent: #0891b2;
+      --accent-dark: #155e75;
+      --card-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --border-color: rgba(255, 255, 255, 0.28);
+      --section-bg: #ffffff;
+      --page-bg: #eef2f7;
+    }
+
+    body {
+      background: var(--page-bg);
+      color: #1e293b;
+      font-family: "Noto Sans", sans-serif;
+    }
+
+    .hero.hero-gradient {
+      background: linear-gradient(145deg, var(--gradient-start) 0%, #164e63 55%, var(--gradient-end) 100%);
+      color: #fff;
+      padding: 2.5rem 0 3.5rem;
+      border-bottom: 4px solid #06b6d4;
+    }
+
+    .hero .publication-title {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .subtitle {
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero.hero-gradient strong,
+    .hero.hero-gradient .subtitle strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .meta-badges span {
+      display: inline-block;
+      margin: 0.3rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .cta-buttons a.button {
+      margin: 0.4rem;
+      font-weight: 600;
+    }
+
+    .author-list {
+      margin-top: 2rem;
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+
+    .author-list a {
+      color: #fff;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+    }
+
+    .author-list a:hover {
+      border-bottom-color: #fff;
+    }
+
+    .affiliation {
+      margin-top: 0.75rem;
+      opacity: 0.88;
+      font-size: 0.95rem;
+    }
+
+    .section-heading {
+      font-family: "Google Sans", "Noto Sans", sans-serif;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-heading.left-rule {
+      text-align: left;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .highlight-card {
+      background: var(--section-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid #dbeafe;
+    }
+
+    .feature-card {
+      background: #f9fafc;
+      border-radius: 14px;
+      padding: 1.6rem;
+      border: 1px solid #e0e7ff;
+      height: 100%;
+    }
+
+    .feature-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .feature-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .contributions-section .feature-card {
+      background: #ffffff;
+    }
+
+    .insight-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+    }
+
+    .insight-card h4 {
+      font-weight: 650;
+      margin-bottom: 0.8rem;
+      color: #3a3f73;
+    }
+
+    .insight-card p {
+      line-height: 1.75;
+      font-size: 1rem;
+      color: #1f2a44;
+    }
+
+    .insight-card.is-observation {
+      background: #ecfdf5;
+      border-left: 4px solid var(--accent);
+    }
+
+    .insight-card.is-insight {
+      background: #fff4e6;
+      border-left: 4px solid #f7971e;
+    }
+
+    .figure-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--card-shadow);
+      margin: 1.25rem auto;
+      border: 1px solid #eef0fb;
+    }
+
+    .figure-card img {
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-card figcaption {
+      padding: 1rem 1.1rem;
+      font-size: 0.88rem;
+      background: #f7f8fc;
+      line-height: 1.6;
+      text-align: left !important;
+    }
+
+    .highlight-card .figure-card {
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+      margin: 1rem auto;
+    }
+
+    .figure-card.figure-wide {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-narrow {
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-medium {
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-card.figure-small {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: start;
+      margin-bottom: 1.25rem;
+    }
+
+    .figure-row .figure-card {
+      margin: 0;
+      max-width: none;
+    }
+
+    .figure-row .figure-card figcaption {
+      font-size: 0.88rem;
+      padding: 1rem 1.1rem;
+    }
+
+    .figure-row .figure-card.figure-row-right {
+      align-self: center;
+    }
+
+    .figure-row .figure-card.figure-row-right img {
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .figure-card.figure-wide img,
+    .figure-card.figure-narrow img,
+    .figure-card.figure-medium img,
+    .figure-card.figure-small img {
+      width: 100%;
+      height: auto;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .process-step {
+      background: white;
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.08);
+      min-width: 0;
+    }
+
+    .process-step h5 {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f766e;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .process-step p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .benchmark-stats {
+      margin-top: 1.25rem;
+    }
+
+    .benchmark-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+
+    .benchmark-stat {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.06);
+      text-align: center;
+    }
+
+    .benchmark-stat .stat-label {
+      font-weight: 650;
+      color: #3a3f73;
+      font-size: 0.95rem;
+    }
+
+    .benchmark-stat .stat-desc {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .baseline-list {
+      margin-top: 1.25rem;
+      line-height: 1.85;
+    }
+
+    .baseline-list .baseline-heading {
+      font-weight: 650;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+
+    .baseline-list .baseline-items {
+      padding-left: 1.5rem;
+      border-left: 3px solid #e2e8f0;
+    }
+
+    .baseline-list .baseline-items div {
+      padding: 0.35rem 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .baseline-list .baseline-items div:last-child {
+      border-bottom: none;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .comparison-card {
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid #e0e7ff;
+      background: #fff;
+    }
+
+    .comparison-card.bad {
+      border-top: 4px solid #ef4444;
+    }
+
+    .comparison-card.good,
+    .comparison-card.highlight {
+      border-top: 4px solid #10b981;
+    }
+
+    .comparison-card h5 {
+      font-weight: 650;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: #fff;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--accent-dark);
+      font-weight: 650;
+      font-size: 1rem;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .demo-banner:hover {
+      color: var(--accent-dark);
+      background: #ecfeff;
+      transform: translateY(-1px);
+    }
+
+    .demo-embed {
+      margin-top: 1.5rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e0e7ff;
+      box-shadow: var(--card-shadow);
+    }
+
+    .demo-embed iframe {
+      width: 100%;
+      height: 72vh;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2.5rem 1.5rem 3rem;
+      margin-top: 2rem;
+    }
+
+    .site-footer .thank-you {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .site-footer .footer-links {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .site-footer .footer-attribution {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 1rem;
+      line-height: 1.65;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-footer a {
+      color: #67e8f9;
+    }
+
+    .site-footer a:hover {
+      color: #a5f3fc;
+    }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    .module-pill {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin: 0.2rem;
+    }
+
+    .module-pill.what { background: #dbeafe; color: #1e40af; }
+    .module-pill.who { background: #dcfce7; color: #166534; }
+    .module-pill.how { background: #fce7f3; color: #9d174d; }
+  </style>
+  <link rel="stylesheet" href="./css/mas-showcase.css">
+</head>
+<body data-blog-id="skill-mas">
+
+<div class="lang-switch lang-switch-fixed"></div>
+
+<section class="hero hero-gradient">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="color: #ffffff; margin-bottom: 1rem;">
+            Skill-MAS
+          </h1>
+          <h2 class="subtitle is-4" style="max-width: 920px; margin: 0 auto 1.5rem; line-height: 1.5;">
+            进化元技能，实现自动化多智能体系统生成
+          </h2>
+          <p class="subtitle is-5" style="opacity: 0.92; max-width: 920px; margin: 0 auto 1.6rem; line-height: 1.7; text-align: justify;">
+            我们为自动化多智能体系统（MAS）开辟了全新的<strong>第三条路径</strong>，将经验积累与参数更新解耦。Skill-MAS 将高层的编排能力抽象为可进化的<strong>元技能</strong>，通过<strong>多轨迹推演</strong>与<strong>选择性反思</strong>来打磨这些元技能——让冻结的前沿大语言模型逐步掌握 MAS 的生成能力，以更优的<strong>成本—性能权衡</strong>产出高度<strong>可迁移</strong>的编排原则。
+          </p>
+
+          <div class="meta-badges">
+            <span>元技能进化</span>
+            <span>多轨迹推演</span>
+            <span>选择性反思</span>
+            <span>四个复杂基准测试</span>
+            <span>跨基座模型迁移</span>
+          </div>
+
+          <div class="lang-switch lang-switch-hero"></div>
+
+          <div class="cta-buttons" style="margin-top: 1.4rem;">
+            <div class="buttons is-centered">
+              <a class="button is-light is-medium" href="#">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>论文</span>
+              </a>
+              <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-images"></i></span>
+                <span>画廊</span>
+              </a>
+              <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-flask"></i></span>
+                <span>在线演示</span>
+              </a>
+              <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-terminal"></i></span>
+                <span>本地运行</span>
+              </a>
+            </div>
+            <div class="buttons is-centered">
+              <a class="button is-light is-medium" href="#Approach">
+                <span class="icon"><i class="fas fa-sitemap"></i></span>
+                <span>方法</span>
+              </a>
+              <a class="button is-primary is-medium" href="#Results">
+                <span class="icon"><i class="fas fa-chart-line"></i></span>
+                <span>结果</span>
+              </a>
+              <a class="button is-info is-medium" href="#Showcase">
+                <span class="icon"><i class="fas fa-project-diagram"></i></span>
+                <span>工作流</span>
+              </a>
+              <a class="button is-info is-medium" href="#Analysis">
+                <span class="icon"><i class="fas fa-microscope"></i></span>
+                <span>分析</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="author-list">
+            <a href="https://linhh29.github.io/" target="_blank" rel="noopener noreferrer">Hehai Lin</a><sup>♠</sup>,
+            <a href="#">Qi Yang</a><sup>♢</sup>,
+            <a href="https://qcwthu.github.io/" target="_blank" rel="noopener noreferrer">Chengwei Qin</a><sup>♠</sup><sup>†</sup>
+          </div>
+          <p class="affiliation">
+            <sup>♠</sup> 香港科技大学（广州） &nbsp;·&nbsp;
+            <sup>♢</sup> 蚂蚁集团<br>
+            <sup>†</sup> 通讯作者：<a href="mailto:chengweiqin@hkust-gz.edu.cn">Chengwei Qin</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding: 1.5rem 1.5rem 0;">
+  <div class="container is-max-desktop">
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/" target="_blank" rel="noopener" class="demo-banner">
+      <span style="font-size: 1.4rem;">&#127881;</span>
+      <span>新功能上线：欢迎探索 Skill-MAS 交互中心，浏览画廊中生成的 MAS 架构，并在线运行三阶段 MAS 构建器！</span>
+      <span style="font-size: 1.2rem;">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">摘要</h2>
+      <p style="line-height: 1.85;">
+        基于大语言模型（LLM）的自动化多智能体系统（MAS）生成已成为应对复杂任务的关键前沿方向。然而，现有方法面临<strong>基座模型能力</strong>与<strong>经验积累</strong>的双重困境。推理时 MAS 依赖冻结的前沿 LLM，但每轮迭代都会重复相同的搜索过程，难以从历史中汲取经验。训练时 MAS 则通过梯度更新将经验内化，却受小型基座模型的能力上限所限，难以扩展到大规模前沿 LLM。
+      </p>
+      <p style="line-height: 1.85; margin-top: 1rem;">
+        为了弥合这一鸿沟，在本文中，我们提出<strong>Skill-MAS</strong>——一种全新的第三条路径。其核心思想是将高层的编排能力抽象为可进化的<strong>元技能</strong>，从而将经验积累与参数更新彻底分离。Skill-MAS 通过闭环优化过程打磨这一架构知识：<strong>（1）多轨迹推演</strong>——在当前的元技能指导下，对每个任务采样行为分布；<strong>（2）选择性反思</strong>——自适应地筛选优先任务，并应用层次化对比分析，将系统性的经验提炼为可泛化的策略级原则。我们在一共四个复杂基准测试和四种不同 LLM 上开展了广泛实验。结果表明，Skill-MAS 不仅带来了显著的性能提升，同时保持了良好的成本—性能权衡。进一步分析揭示，进化后的元技能具备高度的鲁棒性，并在未见任务和不同 LLM 之间表现出强大的可迁移性。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section contributions-section">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3 section-heading left-rule">核心贡献</h2>
+    <div class="columns is-variable is-6 is-multiline" style="margin-top: 1.25rem;">
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>全新的第三条路径</h4>
+          <p>
+            我们开创了一种新范式，将高层的编排行为抽象为可进化的元技能，让冻结的前沿 LLM 无需昂贵的参数更新即可打磨其架构知识。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>多轨迹推演</h4>
+          <p>
+            对每个任务采样多条独立推演，将单次尝试的结果转化为分布统计量——借助不确定性与难度分数，把真实能力与执行随机性区分开来。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-one-third-desktop">
+        <div class="feature-card">
+          <h4>选择性反思</h4>
+          <p>
+            基于优先级的任务筛选与自适应肘部截断，配合层次化对比分析（先任务内，后跨任务），将失败模式提炼为可执行的技能改进点。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-half-desktop">
+        <div class="feature-card">
+          <h4>更优的成本—性能权衡</h4>
+          <p>
+            借助已进化的元技能一次性生成 MAS，而非对每个样本反复优化——Skill-MAS 以中等成本实现了最佳平均性能，同时超越了推理时与训练时两类基线方法。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half-tablet is-half-desktop">
+        <div class="feature-card">
+          <h4>可迁移的元技能</h4>
+          <p>
+            进化的元技能蕴含着可泛化的编排策略，能够在未见任务和不同基座 LLM 之间稳健迁移——这验证了任务无关的技能进化模式。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">能力与经验的两难困境</h2>
+    <figure class="figure-card figure-wide">
+      <img src="./assets/background_preview.png" alt="Overview of MAS paradigms and the Skill-MAS third path">
+      <figcaption>
+        <strong>Figure 1:</strong> MAS 范式概览。（a）—（b）现有推理时与训练时 MAS 的对比，展示基座模型能力与经验积累之间的两难困境。
+        （c）可进化的 Skill-MAS 通过迭代进化元技能弥补了这一差距，成功结合了高能力 LLM 与经验积累的优势。
+      </figcaption>
+    </figure>
+
+    <div class="comparison-grid">
+      <div class="comparison-card bad">
+        <h5>推理时 MAS</h5>
+        <p>EvoAgent、AOrchestra、AFlow——借助前沿 LLM 的强推理能力，但元智能体在每轮迭代中重复执行相同的搜索流程，跨运行之间没有任何累积记忆。</p>
+      </div>
+      <div class="comparison-card bad">
+        <h5>训练时 MAS</h5>
+        <p>MAS²、MAS-Orchestra——通过微调小型 LLM 内化编排能力，但受限于较低的模型能力上限，并且扩展到 100B 以上模型的代价极为高昂。</p>
+      </div>
+      <div class="comparison-card highlight">
+        <h5>Skill-MAS（本研究）</h5>
+        <p>将编排能力抽象为可进化的元技能（SKILL.md）。冻结的前沿元智能体通过推演与反思逐步打磨策略级原则——全程无需参数更新。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Approach">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">Skill-MAS 方法</h2>
+      <p style="margin-bottom: 1.5rem; line-height: 1.8;">
+        Skill-MAS 将元智能体的编排行为建模为结构化的<strong>元技能</strong> <em>S</em>，组织为覆盖完整流水线的三个模块。在每一轮进化 <em>r</em> 中，系统依次经过多轨迹推演和选择性反思，最终产出改进后的技能 <em>S</em><sup>(r+1)</sup>。经过 <em>R</em> 轮进化后，选择验证表现最优的技能 <em>S</em>* 用于测试评估。
+      </p>
+
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        <span class="module-pill what">任务分解（做什么）</span>
+        <span class="module-pill who">智能体工程（谁来做）</span>
+        <span class="module-pill how">工作流编排（如何做）</span>
+      </p>
+
+      <figure class="figure-card figure-wide">
+        <img src="./assets/method_preview.png" alt="Skill-MAS evolutionary loop">
+        <figcaption>
+          <strong>Figure 2:</strong> Skill-MAS 的进化循环。元技能 <em>S</em><sup>(r)</sup>（包含任务分解、智能体工程和工作流拓扑）引导多轨迹推演，计算出分布统计量。这些指标输入到选择性反思阶段：系统按优先级排序任务，通过层次化轨迹反思提取证据 <em>E</em>。技能优化随后利用 <em>E</em> 将元技能打磨为 <em>S</em><sup>(r+1)</sup>，驱动 MAS 生成质量的迭代提升。
+        </figcaption>
+      </figure>
+
+      <div class="process-steps" style="margin-top: 1.5rem;">
+        <div class="process-step">
+          <h5>阶段一 · 多轨迹推演</h5>
+          <p>在当前的元技能指导下，对每个验证任务采样 <em>K</em> 条独立轨迹，计算每个任务的不确定性（分数标准差）和难度（负均值分数），刻画行为分布。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 优先级选择</h5>
+          <p>将不确定性与难度融合为优先级分数，对任务进行排序，通过肘部检测筛选出信息量最高的任务子集，集中优化预算。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 层次化反思</h5>
+          <p>任务内对比分析比较高分与低分轨迹；跨任务综合则提取重复出现的失败模式，将有价值的改进点按影响力排序，整理为结构化证据。</p>
+        </div>
+        <div class="process-step">
+          <h5>阶段二 · 技能优化</h5>
+          <p>优化器在保留三模块框架的前提下重写元技能，移除无效规则，添加可泛化的编排原则，并通过结构有效性检查。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">基准测试</h2>
+    <div class="highlight-card">
+      <p style="line-height: 1.8; margin-bottom: 0.75rem;">
+        我们在四个具有挑战性的基准测试上进行了评估，涵盖深度研究、专家级数学推理、多跳问答以及真实世界交互场景：
+      </p>
+      <div class="benchmark-stats">
+        <div class="benchmark-stats-grid">
+          <div class="benchmark-stat">
+            <div class="stat-label">DeepResearchBench</div>
+            <div class="stat-desc">深度研究任务，从全面性、洞察力、指令遵循度和可读性四个维度评分</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">HLE-Math</div>
+            <div class="stat-desc">Humanity's Last Exam——专家级数学推理，以准确率评估</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">BrowseComp-Plus</div>
+            <div class="stat-desc">复杂的多跳动态问答，需结合检索，以准确率评估</div>
+          </div>
+          <div class="benchmark-stat">
+            <div class="stat-label">VitaBench</div>
+            <div class="stat-desc">真实世界日常场景，涉及多工具调用，以评分表评估器打分</div>
+          </div>
+        </div>
+      </div>
+      <div class="baseline-list">
+        <p class="baseline-heading">基线方法</p>
+        <div class="baseline-items">
+          <div><strong>推理时 MAS：</strong> EvoAgent、AOrchestra、AFlow</div>
+          <div><strong>训练时 MAS：</strong> MAS²、MAS-Orchestra</div>
+        </div>
+      </div>
+      <p style="line-height: 1.8; margin-top: 1rem;">
+        <strong>元智能体基座模型：</strong> Gemini-3.1-Flash、GPT-5.4-Nano、Qwen3.5-Plus、DeepSeek-V4-Flash。
+        所有指标归一化至 [0, 100%]。我们报告各方法的平均性能与平均推理成本（美元）。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Results">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3 section-heading left-rule">主要结果</h2>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">定量比较</h3>
+      <figure class="figure-card figure-medium" style="margin: 1rem auto 1.25rem;">
+        <img src="./assets/table_main.png" alt="Table 1: Main results across four LLMs and four benchmarks">
+        <figcaption>
+          <strong>Table 1:</strong> Skill-MAS 与基线的定量比较。Skill-MAS-init/optimized 分别对应使用 <em>S</em><sup>(1)</sup>/<em>S</em>* 的 Skill-MAS。DRB：DeepResearchBench，HLE：Humanity's Last Exam-Math，BCP：BrowseComp-Plus，VITA：VitaBench。Avg. 报告平均性能和平均推理成本。粗体表示最佳结果。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8;">
+        即便未经迭代进化，<strong>Skill-MAS-init</strong> 已展现出颇具竞争力的性能——例如，在 Gemini-3.1-Flash 上，它略微超越了最佳基线 AFlow（平均 21.68 vs. 21.29）。<strong>Skill-MAS-optimized</strong> 则在几乎所有设置中均以显著优势超越所有基线，在全部四个基座模型上取得了最高的平均性能。在 Qwen3.5-Plus 上，平均性能从 32.61%（init）跃升至 <strong>38.41%</strong>（optimized）；在 DeepSeek-V4-Flash 上，则从 33.72% 提升至 <strong>41.05%</strong>。
+      </p>
+    </div>
+
+    <div class="highlight-card">
+      <h3 class="title is-4 section-heading">更优的成本—性能权衡</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        训练时 MAS 成本最低，但性能最差；推理时 MAS 提升了性能，但推理成本也随之走高。Skill-MAS 则占据最优位置——借助已进化的元技能一次性生成 MAS，以中等成本实现了最高性能：
+      </p>
+      <figure class="figure-card figure-small" style="margin: 0 auto;">
+        <img src="./assets/avg_perf_vs_cost.png" alt="Skill-MAS cost-performance trade-off">
+        <figcaption>
+          <strong>Figure 1:</strong>（d）成本—性能权衡分析，直观展示 Skill-MAS 作为自动化 MAS 更优"第三条路径"的定位。
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Analysis">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">分析与洞见</h2>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">（a）元技能的可迁移性</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        我们评估了跨基座模型和跨任务两种场景下的迁移能力。无迁移（对角线）实现了最大增益；跨基座模型迁移（相同任务）紧随其后；跨任务迁移（相同基座模型）同样取得了有竞争力的表现，验证了进化的元技能确实学到了任务无关的策略：
+      </p>
+      <div class="figure-row">
+        <figure class="figure-card">
+          <img src="./assets/transfer_table.png" alt="Table 2: Transfer performance across LLMs and tasks">
+          <figcaption>
+            <strong>Table 2:</strong> 跨基座模型和跨任务的迁移表现。技能来源（Skill Source）表示元技能进化的（基座模型，任务）设置，测试设置（Test Setting）表示评估该元技能的（基座模型，任务）设置。Δ 是相对于 Skill-MAS-init 的测量值。
+          </figcaption>
+        </figure>
+        <figure class="figure-card figure-row-right">
+          <img src="./assets/transfer_fig.png" alt="Transfer heatmap across LLMs and tasks">
+          <figcaption>
+            <strong>Figure 3:</strong> 左：跨基座模型（DS：DeepSeek-V4-Flash，GPT：GPT-5.4-Nano）和跨任务（BCP：BrowseComp-Plus，VITA：VitaBench）的技能可迁移性热力图。
+          </figcaption>
+        </figure>
+      </div>
+      <div class="columns is-multiline">
+        <div class="column is-half">
+          <div class="insight-card is-observation">
+            <h4>观察</h4>
+            <p>跨基座模型迁移（面板 A）效果良好，因为轨迹分析在不同基座模型上产生了相似的元技能。跨任务迁移（面板 B）在技能内化的是通用编排模式而非领域特定技巧时同样取得了成功。</p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="insight-card is-insight">
+            <h4>洞见</h4>
+            <p>元技能提炼出的是策略级原则——而非特定任务的修补方案——这使其在未见数据集和不同基座模型之间均能稳健泛化。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">（b）多轨迹推演的规模扩展</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        我们对每个任务的推演数量 <em>K</em>（默认 <em>K</em>=5）进行了消融实验。随着轨迹数量增加，性能持续提升，但从 5 到 7 时出现了收益递减：
+      </p>
+      <figure class="figure-card figure-small" style="margin: 0 auto 1rem;">
+        <img src="./assets/scaling.png" alt="Performance scaling with rollout number K">
+        <figcaption>
+          <strong>Figure 3:</strong> 右：性能随多轨迹推演数量增加的变化趋势（<em>K</em> = 3, 5, 7）。
+        </figcaption>
+      </figure>
+      <div class="insight-card is-insight">
+        <h4>洞见</h4>
+        <p>性能随推演数量的增加持续改善，表明采样轨迹与进化质量之间存在明确的正相关关系。然而，增益呈现递减趋势：从 <em>K</em>=3 到 5 的提升大于从 5 到 7 的提升，而更高的推演数量不可避免地增加了进化过程中的计算开销。因此，在实践中，这一超参数需要在最大化性能与管控进化开销之间作出审慎的权衡。</p>
+      </div>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">（c）选择性反思的消融实验</h3>
+      <figure class="figure-card figure-small" style="margin: 0 auto 1rem;">
+        <img src="./assets/ablation.png" alt="Table 3: Ablation on selective reflection and multi-task learning">
+        <figcaption>
+          <strong>Table 3:</strong> 不同设置下 Skill-MAS 的消融结果。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        在缺少自适应优先级选择的情况下，两种无标签变体（全量验证集、半数验证集）均出现了性能下降，但仍超越了大多数基线——这凸显了基于肘部检测的任务选择的重要性。多任务学习则呈现出混合结果，在 VitaBench 上略有提升，但在 BrowseComp-Plus 上有所下滑。
+      </p>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">（d）元技能进化轨迹</h3>
+      <figure class="figure-card figure-medium" style="margin: 0 auto 1rem;">
+        <img src="./assets/evolution.png" alt="Meta-Skill evolution on BrowseComp-Plus">
+        <figcaption>
+          <strong>Figure 4:</strong> BrowseComp-Plus 上的元技能进化过程。
+        </figcaption>
+      </figure>
+      <p style="line-height: 1.8;">
+        技能进化描绘出一条清晰的弧线：模块一建立了认知脚手架（约束优先级排序、扇出检索）；模块二引入了校准评估机制（加权约束满足）；模块三则增加了系统级的韧性（跨实体桥接、合并节点重执行）。
+      </p>
+    </div>
+
+    <div class="highlight-card" style="margin-bottom: 2rem;">
+      <h3 class="title is-4 section-heading">（e）进化后的 MAS 呈现何种形态</h3>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        在 BrowseComp-Plus 上，基线方法产生的往往是浅层的并行搜索或缺乏约束链接的线性链。相比之下，Skill-MAS-optimized 生成的则是结构化的流水线，包含针对各条线索的专用检索器，并在最终决策前进行链接验证：
+      </p>
+      <figure class="figure-card figure-medium" style="margin: 0 auto 1rem;">
+        <img src="./assets/case_bcp.png" alt="Case study on BrowseComp-Plus">
+        <figcaption>
+          <strong>Table 7:</strong> BrowseComp-Plus 上 MAS 结构对比（DeepSeek-V4-Flash）。
+        </figcaption>
+      </figure>
+      <figure class="figure-card figure-medium" style="margin: 0 auto;">
+        <img src="./assets/case_vita.png" alt="Case study on VitaBench">
+        <figcaption>
+          <strong>Table 8:</strong> VitaBench 上 MAS 结构对比（DeepSeek-V4-Flash）。
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Showcase">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">代表性生成工作流</h2>
+      <p style="line-height: 1.8; margin-bottom: 0.5rem;">
+        以下精选自我们画廊（DeepSeek V4 Flash）的<strong>Skill-MAS 生成 MAS 架构</strong>预览。每个案例展示了阶段三的工作流拓扑——串行链、并行扇出/扇入以及迭代反馈循环——采用水平布局，方便您一览完整的智能体图。
+      </p>
+      <div id="mas-showcase-root" class="mas-showcase" aria-label="Representative generated MAS structure diagrams"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Demo">
+  <div class="container is-max-desktop">
+    <div class="highlight-card">
+      <h2 class="title is-3 section-heading left-rule">画廊与在线演示</h2>
+      <p style="line-height: 1.8; margin-bottom: 1rem;">
+        想了解更多？欢迎浏览完整画廊，查看每项进化的元技能及其推演产物，或进入<strong>在线演示</strong>交互式构建并运行您自己的三阶段 MAS 流水线。
+      </p>
+      <div class="buttons">
+        <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
+          打开画廊 &rarr;
+        </a>
+        <a class="button is-success is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">
+          打开在线演示 &rarr;
+        </a>
+        <a class="button is-light is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">
+          本地运行 &rarr;
+        </a>
+      </div>
+      <div class="demo-embed">
+        <iframe
+          src="https://ports-baseball-paso-grow.trycloudflare.com/demo"
+          title="Skill-MAS Online Demo"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p class="thank-you">
+    如果您认为本研究对您有所帮助，欢迎引用我们的论文，我们将不胜感激！
+  </p>
+  <p class="footer-links">
+    Skill-MAS ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">画廊</a> ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">演示</a> ·
+    <a href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">本地运行</a> ·
+    <a href="https://linhh29.github.io/">首页</a> ·
+    <a href="/blog/Unified-MAS/index.html">Unified-MAS</a>
+  </p>
+  <p class="footer-links">
+    <span class="blog-view-count is-loading" title="总页面浏览量">
+      <i class="fas fa-eye" aria-hidden="true"></i>
+      <span data-blog-view-count>—</span> 次浏览
+    </span>
+  </p>
+  <p class="footer-attribution">
+    本网站采用
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a> 许可。
+  </p>
+  <p class="footer-attribution">
+    这意味着您可以自由使用本网站的
+    <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">源代码</a>，
+    我们只要求您在页脚中链接回本页面。
+  </p>
+</footer>
+
+<script src="/blog/_shared/js/lang-switch.js"></script>
+<script src="./js/mas-showcase.js"></script>
+<script type="module" src="/blog/_shared/js/view-count.js"></script>
+</body>
+</html>
