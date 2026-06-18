@@ -13,8 +13,8 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/blog/_shared/css/view-count.css">
-  <link rel="stylesheet" href="/blog/_shared/css/i18n.css">
+  <link rel="stylesheet" href="/blog/shared/css/view-count.css">
+  <link rel="stylesheet" href="/blog/shared/css/i18n.css">
 
   <style>
     :root {
@@ -409,6 +409,27 @@
       background: #fff;
     }
 
+    .bibtex-card {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .bibtex-card pre {
+      background: #0b1220;
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      overflow-x: auto;
+    }
+
+    pre code {
+      color: #f8fafc;
+    }
+
     .site-footer {
       background: #0f172a;
       color: #cbd5e1;
@@ -510,10 +531,20 @@
 
           <div class="cta-buttons" style="margin-top: 1.4rem;">
             <div class="buttons is-centered">
-              <a class="button is-light is-medium" href="#">
+              <a class="button is-light is-medium" href="https://arxiv.org/abs/2606.18837" target="_blank" rel="noopener">
                 <span class="icon"><i class="ai ai-arxiv"></i></span>
                 <span>Paper</span>
               </a>
+              <a class="button is-link is-medium" href="https://huggingface.co/papers/2606.18837" target="_blank" rel="noopener">
+                <span class="icon">🤗</span>
+                <span>Daily Paper</span>
+              </a>
+              <a class="button is-primary is-medium" href="https://github.com/linhh29/Skill_MAS" target="_blank" rel="noopener">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>GitHub</span>
+              </a>
+            </div>
+            <div class="buttons is-centered">
               <a class="button is-warning is-medium" href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">
                 <span class="icon"><i class="fas fa-images"></i></span>
                 <span>Gallery</span>
@@ -544,6 +575,7 @@
                 <span class="icon"><i class="fas fa-microscope"></i></span>
                 <span>Analysis</span>
               </a>
+              <a class="button is-link is-medium" href="#BibTeX">BibTeX</a>
             </div>
           </div>
 
@@ -989,17 +1021,33 @@
   </div>
 </section>
 
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-heading left-rule">BibTeX</h2>
+    <div class="bibtex-card">
+      <pre><code>@article{lin2026skill,
+  title   = {Skill-MAS: Evolving Meta-Skill for Automatic Multi-Agent Systems},
+  author  = {Lin, Hehai and Yang, Qi and Qin, Chengwei},
+  journal = {arXiv preprint arXiv:2606.18837},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p class="thank-you">
     If you find this project helpful, please consider citing our paper — we'd really appreciate it!
   </p>
   <p class="footer-links">
     Skill-MAS ·
+    <a href="https://arxiv.org/abs/2606.18837" target="_blank" rel="noopener">Paper</a> ·
+    <a href="https://huggingface.co/papers/2606.18837" target="_blank" rel="noopener">Daily Paper</a> ·
+    <a href="https://github.com/linhh29/Skill_MAS" target="_blank" rel="noopener">GitHub</a> ·
     <a href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">Gallery</a> ·
     <a href="https://ports-baseball-paso-grow.trycloudflare.com/demo" target="_blank" rel="noopener">Demo</a> ·
     <a href="https://ports-baseball-paso-grow.trycloudflare.com/local" target="_blank" rel="noopener">Run Locally</a> ·
-    <a href="https://linhh29.github.io/">Homepage</a> ·
-    <a href="/blog/Unified-MAS/index.html">Unified-MAS</a>
+    <a href="https://linhh29.github.io/">Homepage</a>
   </p>
   <p class="footer-links">
     <span class="blog-view-count is-loading" title="Total page views">
@@ -1018,8 +1066,8 @@
   </p>
 </footer>
 
-<script src="/blog/_shared/js/lang-switch.js"></script>
+<script src="/blog/shared/js/lang-switch.js"></script>
 <script src="./js/mas-showcase.js"></script>
-<script type="module" src="/blog/_shared/js/view-count.js"></script>
+<script type="module" src="/blog/shared/js/view-count.js"></script>
 </body>
 </html>
