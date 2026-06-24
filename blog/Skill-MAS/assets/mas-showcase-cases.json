@@ -37,7 +37,7 @@
         }
       ],
       "agent_count": 4,
-      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+      "gallery_url": "https://skill-mas-demo.hehailin.life/gallery"
     },
     {
       "id": "parallel-drb",
@@ -79,7 +79,7 @@
         }
       ],
       "agent_count": 4,
-      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+      "gallery_url": "https://skill-mas-demo.hehailin.life/gallery"
     },
     {
       "id": "parallel-bcp",
@@ -133,7 +133,7 @@
         }
       ],
       "agent_count": 6,
-      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+      "gallery_url": "https://skill-mas-demo.hehailin.life/gallery"
     },
     {
       "id": "loop-hlemath",
@@ -181,7 +181,7 @@
         }
       ],
       "agent_count": 5,
-      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+      "gallery_url": "https://skill-mas-demo.hehailin.life/gallery"
     },
     {
       "id": "parallel-vita",
@@ -248,7 +248,7 @@
           "type": "sequential"
         }
       ],
-      "gallery_url": "https://ports-baseball-paso-grow.trycloudflare.com/gallery"
+      "gallery_url": "https://skill-mas-demo.hehailin.life/gallery"
     }
   ]
 }

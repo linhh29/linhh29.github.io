@@ -243,7 +243,7 @@
 
       bindFilters(mount, mount.querySelectorAll(".mas-showcase-card"));
     } catch (err) {
-      mount.innerHTML = `<p class="mas-showcase-meta">Could not load MAS showcase data. <a href="https://ports-baseball-paso-grow.trycloudflare.com/gallery" target="_blank" rel="noopener">Open Gallery</a> to explore builds directly.</p>`;
+      mount.innerHTML = `<p class="mas-showcase-meta">Could not load MAS showcase data. <a href="https://skill-mas-demo.hehailin.life/gallery" target="_blank" rel="noopener">Open Gallery</a> to explore builds directly.</p>`;
       console.error("mas-showcase:", err);
     }
   }
