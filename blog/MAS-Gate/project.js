@@ -84,8 +84,23 @@ window.MAS_GATE_PROJECT = {
   ],
   "correspondence": "chengweiqin@hkust-gz.edu.cn",
   "paper_url": "",
-  "code_url": "",
+  "code_url": "https://github.com/linhh29/MAS_Gate",
   "demo_url": "https://mas-gate-demo.hehailin.life/",
   "project_url": "https://linhh29.github.io/blog/MAS-Gate/index.html"
 };
-for(const [key,selector] of [['paper_url','[data-paper]'],['code_url','[data-code]'],['demo_url','[data-demo]'],['project_url','[data-project]']]){const url=window.MAS_GATE_PROJECT[key];if(/^https?:\/\//.test(url))document.querySelectorAll(selector).forEach(a=>{const target=new URL(url);if(key==='demo_url'){const local=new URL(a.getAttribute('href'),location.href);if(local.search)target.search=local.search}a.href=target.href})}
+for (const [key, selector] of [
+  ['paper_url', '[data-paper]'], ['code_url', '[data-code]'],
+  ['demo_url', '[data-demo]'], ['project_url', '[data-project]']
+]) {
+  const url = window.MAS_GATE_PROJECT[key];
+  if (!/^https?:\/\//.test(url)) continue;
+  document.querySelectorAll(selector).forEach(link => {
+    const target = new URL(url);
+    const original = new URL(link.getAttribute('href'), location.href);
+    if (key === 'demo_url' || key === 'project_url') {
+      target.search = original.search;
+      target.hash = original.hash;
+    }
+    link.href = target.href;
+  });
+}
