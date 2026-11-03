@@ -61,6 +61,7 @@ window.MAS_LOOP_PROJECT = {
  document.querySelectorAll('[data-project-correspondence]').forEach(el=>el.textContent=p.corresponding_author?'† Corresponding author: '+p.corresponding_author:'');
  if(safeURL(p.code_url))document.querySelectorAll('[data-project-code]').forEach(a=>{a.href=p.code_url});
  if(safeURL(p.paper_url))document.querySelectorAll('a[href$="paper.pdf"]').forEach(a=>a.href=p.paper_url);
+ if(safeURL(p.project_url))document.querySelectorAll('[data-project-link]').forEach(a=>{a.href=p.project_url});
  if(safeURL(p.demo_url))document.querySelectorAll('[data-demo-link]').forEach(a=>a.href=p.demo_url);
  const bib=document.querySelector('#bibtex');
  if(bib&&p.authors.length)bib.textContent='@misc{masloop'+p.year+',\n  title = {'+p.title+'},\n  author = {'+p.authors.map(a=>a.bibtex||a.name).join(' and ')+'},\n  year = {'+p.year+'},\n  note = {'+p.note+'}\n}';
