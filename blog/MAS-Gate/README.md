@@ -11,10 +11,11 @@ python3 -m http.server 8000 --bind 127.0.0.1
 Open http://127.0.0.1:8000/. Use HTTP so the benchmark JSON can load. Official links are also present in HTML so navigation works without JavaScript:
 
 - Code: https://github.com/linhh29/MAS_Gate
+- Paper: https://arxiv.org/abs/2610.17613
 - Demo: https://mas-gate-demo.hehailin.life/
 - Project blog: https://linhh29.github.io/blog/MAS-Gate/index.html
 
-`project.js` centralizes these URLs and preserves section anchors and demo parameters. The paper remains a bundled PDF. `polish.css` supplies the reading and responsive layout; `reading.js` adds an accessible figure dialog and BibTeX copying. Original image aspect ratios are preserved.
+`project.js` centralizes these URLs and preserves section anchors and demo parameters. All Paper buttons link to the verified arXiv record; the bundled PDF remains available as an archived asset. The citation includes the arXiv identifier. `polish.css` supplies the reading and responsive layout; `reading.js` adds an accessible figure dialog and BibTeX copying. Original image aspect ratios are preserved.
 
 `visits.js` uses the same public CountAPI service as Skill-MAS. The blog and demo use separate counter keys (`linhh29.github.io-mas-gate-blog` and `linhh29.github.io-mas-gate-demo`). One visit is recorded per tab session, with refreshes deduplicated using sessionStorage when available. This is a visit count, not a unique-person count. Local previews do not increment it, and service failures show “Unavailable” without affecting the page. The demo CSP allows connections only to itself and this specific counting service.
 

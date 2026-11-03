@@ -83,7 +83,7 @@ window.MAS_GATE_PROJECT = {
     "Institute for Infocomm Research (I²R), A*STAR"
   ],
   "correspondence": "chengweiqin@hkust-gz.edu.cn",
-  "paper_url": "",
+  "paper_url": "https://arxiv.org/abs/2610.17613",
   "code_url": "https://github.com/linhh29/MAS_Gate",
   "demo_url": "https://mas-gate-demo.hehailin.life/",
   "project_url": "https://linhh29.github.io/blog/MAS-Gate/index.html"
