@@ -39,9 +39,10 @@
   ],
   "corresponding_author": "Chengwei Qin",
   "code_url": "https://github.com/linhh29/MAS_Loop",
-  "paper_url": "",
+  "paper_url": "https://arxiv.org/abs/2610.38946",
   "project_url": "https://linhh29.github.io/blog/MAS-Loop/index.html",
   "demo_url": "https://mas-loop-demo.hehailin.life/",
   "year": "2026",
-  "note": "Manuscript under review"
+  "note": "arXiv:2610.38946",
+  "eprint": "2610.38946"
 }
