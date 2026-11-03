@@ -1,0 +1,47 @@
+{
+  "title": "MAS-Loop: Beyond One-Shot Orchestration towards Self-Evolving Multi-Agent Systems",
+  "authors": [
+    {
+      "name": "Hehai Lin",
+      "bibtex": "Lin, Hehai",
+      "affiliations": [
+        "1"
+      ],
+      "url": "https://linhh29.github.io/"
+    },
+    {
+      "name": "Qi Yang",
+      "bibtex": "Yang, Qi",
+      "affiliations": [
+        "2"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Chengwei Qin",
+      "bibtex": "Qin, Chengwei",
+      "affiliations": [
+        "1"
+      ],
+      "corresponding": true,
+      "url": "https://qcwthu.github.io/"
+    }
+  ],
+  "affiliations": [
+    {
+      "id": "1",
+      "name": "HKUST (Guangzhou)"
+    },
+    {
+      "id": "2",
+      "name": "Ant Group"
+    }
+  ],
+  "corresponding_author": "Chengwei Qin",
+  "code_url": "https://github.com/linhh29/MAS_Loop",
+  "paper_url": "",
+  "project_url": "https://linhh29.github.io/blog/MAS-Loop/index.html",
+  "demo_url": "https://mas-loop-demo.hehailin.life/",
+  "year": "2026",
+  "note": "Manuscript under review"
+}
