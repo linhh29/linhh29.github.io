@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,7 +25,7 @@ jobs:
           trap 'rm -f "$RESPONSE"' EXIT
           curl --fail --silent --show-error --connect-timeout 15 --max-time 90 \
             --retry 3 \
-            "https://serpapi.com/search.json?engine=google_scholar_author&author_id=u2TFzcAAAAAJ&api_key=${SERPAPI_KEY}" \
+            "https://serpapi.com/search.json?engine=google_scholar_author&author_id=u2TFzcAAAAAJ&no_cache=true&api_key=${SERPAPI_KEY}" \
             -o "$RESPONSE"
 
           # API 报错、缺失数据或非整数时退出，保留网站原来的引用数。
@@ -73,3 +74,9 @@ jobs:
           git add assets/index-*.js
           git diff --staged --quiet || git commit -m "Auto-update citations count"
           git push
+
+      # GITHUB_TOKEN 提交不会自动触发 Pages 发布，需显式请求构建。
+      - name: Publish updated citations to GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
