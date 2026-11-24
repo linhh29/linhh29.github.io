@@ -8,6 +8,8 @@ on:
 jobs:
   update-citations:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,29 +18,58 @@ jobs:
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: |
-          # 1. 调用接口并将原始数据存入 temp.json
-          curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=u2TFzcAAAAAJ&api_key=${SERPAPI_KEY}" > temp.json
+          set -euo pipefail
+          : "${SERPAPI_KEY:?请在仓库 Secrets 中配置 SERPAPI_KEY}"
+          RESPONSE=$(mktemp)
+          trap 'rm -f "$RESPONSE"' EXIT
+          curl --fail --silent --show-error --connect-timeout 15 --max-time 90 \
+            --retry 3 \
+            "https://serpapi.com/search.json?engine=google_scholar_author&author_id=u2TFzcAAAAAJ&api_key=${SERPAPI_KEY}" \
+            -o "$RESPONSE"
 
-          # 2. 使用 jq 精准提取引用数字（例如：87）
-          CITATIONS=$(jq -r '.cited_by.table[0].citations.all' temp.json)
+          # API 报错、缺失数据或非整数时退出，保留网站原来的引用数。
+          CITATIONS=$(jq -er '
+            if .error then error("SerpApi returned an error; check API key and quota")
+            else .cited_by.table[0].citations.all
+              | if type == "number" then
+                  if . >= 0 and . == floor then .
+                  else error("Invalid citation count") end
+                else error("Missing or invalid citation count") end
+            end' "$RESPONSE")
+          export CITATIONS
           echo "成功抓取到引用量: $CITATIONS"
 
-          # 3. 直接替换打包产物里的 citations 数字
-          JS_FILE=$(ls assets/index-*.js)
-          if [ -z "$JS_FILE" ]; then
-            echo "未找到 assets/index-*.js，退出"
-            exit 1
-          fi
+          # 分别处理每个打包产物，避免把多个文件名拼成一个路径。
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
 
-          # 将形如 citations:61 或 citations : 61 替换为最新值
-          sed -E -i "s/(citations[[:space:]]*:[[:space:]]*)[0-9]+/\1$CITATIONS/g" "$JS_FILE"
-          echo "已更新文件: $JS_FILE"
-          rm -f temp.json
+          files = sorted(Path("assets").glob("index-*.js"))
+          if not files:
+              raise SystemExit("未找到 assets/index-*.js")
+          updates = []
+          for path in files:
+              original = path.read_text(encoding="utf-8")
+              updated, count = re.subn(
+                  r"(\bcitations\s*:\s*)(?:[0-9]+|null)\b",
+                  lambda match: match[1] + os.environ["CITATIONS"],
+                  original,
+              )
+              if count:
+                  updates.append((path, original, updated))
+          if not updates:
+              raise SystemExit("未找到 citations 字段，请检查前端打包格式")
+          for path, original, updated in updates:
+              if updated != original:
+                  path.write_text(updated, encoding="utf-8")
+              print(f"已检查引用量: {path}")
+          PY
 
       - name: Commit and push if changed
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add assets/index-*.js || true
+          git add assets/index-*.js
           git diff --staged --quiet || git commit -m "Auto-update citations count"
           git push
